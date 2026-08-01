@@ -40,7 +40,7 @@ WP Online Active Users is a lightweight, powerful plugin to monitor and display 
 Clone this repository:
 
 ```bash
-git clone https://github.com/Webizito/online-active-users.git
+git clone https://github.com/nikvalani96/online-active-users.git
 ```
 
 ## Contributing
@@ -54,4 +54,4 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) before submitting a pull request.
 We are committed to providing ongoing updates and new features based on user feedback.
 
 - WordPress Support Forum: https://wordpress.org/support/plugin/online-active-users/
-- GitHub Issues: https://github.com/Webizito/online-active-users/issues
+- GitHub Issues: https://github.com/nikvalani96/online-active-users/issues
