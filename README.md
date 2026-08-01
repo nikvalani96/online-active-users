@@ -55,8 +55,3 @@ We are committed to providing ongoing updates and new features based on user fee
 
 - WordPress Support Forum: https://wordpress.org/support/plugin/online-active-users/
 - GitHub Issues: https://github.com/Webizito/online-active-users/issues
-
-
-## License
-
-GPL-3.0-or-later
