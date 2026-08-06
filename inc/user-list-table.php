@@ -43,8 +43,9 @@ echo '</select>';
 echo '<select name="filter_country" style="margin-right: 10px;">
         <option value="">' . esc_html__( 'All Countries', 'online-active-users' ) . '</option>';
 foreach ( $all_countries as $c ) {
-	$selected = ( $filter_country === $c ) ? 'selected' : '';
-	echo '<option value="' . esc_attr( $c ) . '" ' . esc_attr( $selected ) . '>' . esc_html( $c ) . '</option>';
+	$selected      = ( $filter_country === $c ) ? 'selected' : '';
+	$country_label = ( 'Unknown' === $c ) ? __( 'Unknown', 'online-active-users' ) : $c;
+	echo '<option value="' . esc_attr( $c ) . '" ' . esc_attr( $selected ) . '>' . esc_html( $country_label ) . '</option>';
 }
 echo '</select>';
 
@@ -91,11 +92,12 @@ foreach ( $users as $user ) {
 	if ( ! $full_name ) {
 		$full_name = $user_obj->display_name;
 	}
-	$is_online    = $wpoau_users->wpoau_is_user_online( $user['id'] );
-	$last_seen    = wp_date( 'M j, Y @ g:ia', $user['last'] );
-	$ip           = isset( $user['ip'] ) ? $user['ip'] : __( 'Unknown', 'online-active-users' );
-	$country      = isset( $user['country'] ) ? $user['country'] : __( 'Unknown', 'online-active-users' );
-	$timezone     = isset( $user['timezone'] ) ? $user['timezone'] : __( 'Unknown', 'online-active-users' );
+	$is_online = $wpoau_users->wpoau_is_user_online( $user['id'] );
+	$last_seen = wp_date( 'M j, Y @ g:ia', $user['last'] );
+	// 'Unknown' is the untranslated sentinel Wpoau_Active_Users::wpoau_get_user_ip()/_country()/_timezone() store and compare against; translate only for display below.
+	$ip           = isset( $user['ip'] ) ? $user['ip'] : 'Unknown';
+	$country      = isset( $user['country'] ) ? $user['country'] : 'Unknown';
+	$timezone     = isset( $user['timezone'] ) ? $user['timezone'] : 'Unknown';
 	$roles        = isset( $user_obj->roles ) ? implode( ', ', $user_obj->roles ) : '—';
 	$country_code = strtolower( $wpoau_users->wpoau_get_user_country_code( $ip ) );
 
@@ -107,9 +109,9 @@ foreach ( $users as $user ) {
 	echo '<td>' . esc_html( $user_obj->user_login ) . '</td>';
 	echo '<td>' . esc_html( $full_name ) . '</td>';
 	echo '<td>' . esc_html( ucfirst( $roles ) ) . '</td>';
-	echo '<td>' . esc_html( $ip ) . '</td>';
-	echo '<td><img src="https://flagcdn.com/16x12/' . esc_attr( $country_code ) . '.webp" class="webi-country-flag" alt="' . esc_attr( $country_code ) . '" />' . esc_html( $country ) . '</td>';
-	echo '<td>' . esc_html( $timezone ) . '</td>';
+	echo '<td>' . esc_html( 'Unknown' === $ip ? __( 'Unknown', 'online-active-users' ) : $ip ) . '</td>';
+	echo '<td><img src="https://flagcdn.com/16x12/' . esc_attr( $country_code ) . '.webp" class="webi-country-flag" alt="' . esc_attr( $country_code ) . '" />' . esc_html( 'Unknown' === $country ? __( 'Unknown', 'online-active-users' ) : $country ) . '</td>';
+	echo '<td>' . esc_html( 'Unknown' === $timezone ? __( 'Unknown', 'online-active-users' ) : $timezone ) . '</td>';
 	echo '<td class="status-cols-wrap">';
 	if ( $is_online ) {
 		echo ' <span class="online-logged-in">●</span> <br />';
