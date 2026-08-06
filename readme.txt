@@ -1,4 +1,4 @@
-=== WP Online Active Users ===
+=== Online Active Users ===
 Contributors: valani9099
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=APRNBJUZHRP7G
 Tags: online users, active users, online active users, real-time users, user activity
@@ -16,7 +16,7 @@ Author URI: http://webizito.com/
 Text Domain: online-active-users
 Version: 3.4.1
 
-WP Online Active Users is a lightweight, powerful plugin to monitor and display how many users are currently online active on your WordPress website.
+Online Active Users is a lightweight, powerful plugin to monitor and display how many users are currently online active on your WordPress website.
 
 == Description ==
 
