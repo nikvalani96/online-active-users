@@ -35,6 +35,8 @@ if ( ! defined( 'WPOAU_VERSION' ) ) {
 	define( 'WPOAU_VERSION', '3.4.1' );
 }
 
+// class-wpoau-active-users.php replaces the old inc/webi-functions.php (removed): both defined the
+// same Wpoau_Active_Users class, and this one has the escaping/i18n/WPCS fixes applied.
 require_once WPOAU_PLUGIN_DIR . '/inc/class-wpoau-active-users.php';
 require_once WPOAU_PLUGIN_DIR . '/class-webi-custom-widget.php';
 
