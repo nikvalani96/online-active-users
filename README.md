@@ -1,4 +1,4 @@
-## WP Online Active Users
+## Online Active Users
 
 [![PHPCS](https://github.com/nikvalani96/online-active-users/actions/workflows/phpcs.yml/badge.svg)](https://github.com/nikvalani96/online-active-users/actions/workflows/phpcs.yml)
 [![PHPStan](https://github.com/nikvalani96/online-active-users/actions/workflows/phpstan.yml/badge.svg)](https://github.com/nikvalani96/online-active-users/actions/workflows/phpstan.yml)
