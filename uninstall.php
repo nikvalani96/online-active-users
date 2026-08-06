@@ -14,10 +14,10 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 delete_transient( 'users_status' );
 
 // Delete all custom transients.
-$stored_keys = get_option( 'wpoau_transient_keys', array() );
-if ( ! empty( $stored_keys ) ) {
-	foreach ( $stored_keys as $key ) {
-		delete_transient( $key );
+$wpoau_stored_keys = get_option( 'wpoau_transient_keys', array() );
+if ( ! empty( $wpoau_stored_keys ) ) {
+	foreach ( $wpoau_stored_keys as $wpoau_key ) {
+		delete_transient( $wpoau_key );
 	}
 	delete_option( 'wpoau_transient_keys' );
 }

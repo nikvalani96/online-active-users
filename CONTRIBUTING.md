@@ -44,6 +44,19 @@ Please create a GitHub issue and include:
 - Keep code clean and documented.
 - Test changes before submitting a pull request.
 
+**Running the checks locally**
+
+```bash
+composer install
+composer lint       # WordPress Coding Standards (PHPCS)
+composer lint:fix   # Auto-fix what PHPCBF can
+composer analyse    # Static analysis (PHPStan)
+composer compat     # PHP 7.3+ compatibility check
+composer test       # PHPUnit
+```
+
+These same checks run automatically on every pull request via GitHub Actions.
+
 **License**
 
 This plugin is licensed under GPL-3.0-or-later.
