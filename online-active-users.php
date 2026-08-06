@@ -71,12 +71,12 @@ if ( ! class_exists( 'Webi_Active_User' ) ) {
 			add_action( 'admin_init', array( $this->wpoau, 'wpoau_users_status_init' ) );
 			add_action( 'wp_dashboard_setup', array( $this->wpoau, 'wpoau_active_users_metabox' ) );
 			add_filter( 'manage_users_columns', array( $this->wpoau, 'wpoau_user_columns_head' ) );
-			add_action( 'manage_users_custom_column', array( $this->wpoau, 'wpoau_user_columns_content' ), 10, 10 );
+			add_filter( 'manage_users_custom_column', array( $this->wpoau, 'wpoau_user_columns_content' ), 10, 3 );
 			add_filter( 'views_users', array( $this, 'wpoau_modify_user_view' ) );
 			add_action( 'admin_bar_menu', array( $this->wpoau, 'wpoau_admin_bar_link' ), 999 );
 			add_filter( 'plugin_row_meta', array( $this, 'wpoau_support_and_faq_links' ), 10, 4 );
 			add_action( 'admin_menu', array( $this, 'wpoau_add_admin_submenu' ) );
-			add_filter( 'plugin_action_links_' . plugin_basename( WPOAU_PLUGIN_FILE ), array( $this, 'wpoau_plugin_by_link' ), 10, 2 );
+			add_filter( 'plugin_action_links_' . plugin_basename( WPOAU_PLUGIN_FILE ), array( $this, 'wpoau_plugin_by_link' ), 10, 1 );
 			add_action( 'admin_notices', array( $this, 'wpoau_display_notice' ) );
 			register_deactivation_hook( WPOAU_PLUGIN_FILE, array( $this, 'wpoau_display_notice' ) );
 			register_deactivation_hook( WPOAU_PLUGIN_FILE, array( $this, 'wpoau_delete_transient' ) );

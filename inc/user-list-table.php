@@ -5,6 +5,11 @@
  * @package Online_Active_Users
  */
 
+// This template is always require()'d from inside Webi_Active_User::wpoau_active_users_page(),
+// so its variables live in that method's local scope at runtime, not the global scope PHPCS
+// assumes for top-level file code.
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
+
 defined( 'ABSPATH' ) || exit;
 
 global $wpoau_users;
@@ -12,6 +17,7 @@ global $wpoau_users;
 $all_roles     = array();
 $all_countries = array();
 
+// @phpstan-ignore-next-line variable.undefined -- $users is always set by the caller, Webi_Active_User::wpoau_active_users_page(), before requiring this template.
 foreach ( $users as $u ) {
 	$u_obj = get_userdata( $u['id'] );
 	if ( ! empty( $u_obj->roles ) ) {
