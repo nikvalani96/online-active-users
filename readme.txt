@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: online users, active users, online active users, real-time users, user activity
 Requires at least: 6.3
 Tested up to: 7.0
-Stable tag: 3.4
+Stable tag: 3.4.1
 Requires PHP: 7.3
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -13,8 +13,8 @@ Plugin Title: Online Active Users Plugin
 Plugin URI: https://wordpress.org/plugins/online-active-users/
 Author: Webizito
 Author URI: http://webizito.com/
-Text Domain: wp-online-active-users
-Version: 3.4
+Text Domain: online-active-users
+Version: 3.4.1
 
 WP Online Active Users is a lightweight, powerful plugin to monitor and display how many users are currently online active on your WordPress website.
 
@@ -185,6 +185,11 @@ We are committed to providing ongoing updates and new features based on user fee
 = 3.4 =
 * Fix some bug.
 
+= 3.4.1 =
+* Fixed the plugin's text domain to match its slug so translations load correctly.
+* Escaped all dynamic output and added missing translation wrappers for full translation compatibility.
+* Coding standards (WPCS/PHPCS) cleanup: removed dead/duplicate code, added nonce-safety and sanitization fixes on the users list table filters.
+
 == Upgrade Notice ==
 
 = 1.0 =
@@ -262,3 +267,6 @@ We are committed to providing ongoing updates and new features based on user fee
 
 = 3.4 =
 * Fix some bug.
+
+= 3.4.1 =
+* Text domain and translation fixes, plus WPCS/PHPCS coding standards cleanup. Upgrade recommended.
