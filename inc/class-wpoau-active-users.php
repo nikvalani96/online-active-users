@@ -92,16 +92,16 @@ class Wpoau_Active_Users {
 	public function wpoau_user_columns_content( $value, $column_name, $id ) {
 		if ( 'status' === $column_name ) {
 			if ( $this->wpoau_is_user_online( $id ) ) {
-				return '<span class="online-logged-in">●</span> <br /><small><em>Online Now</em></small>';
+				return '<span class="online-logged-in">●</span> <br /><small><em>' . esc_html__( 'Online Now', 'online-active-users' ) . '</em></small>';
 			} else {
 				$last_seen = get_user_meta( $id, 'last_seen', true );
 
 				if ( ! $last_seen ) {
-					$last_seen_text = '<small><em>Never Logged In</em></small>';
+					$last_seen_text = '<small><em>' . esc_html__( 'Never Logged In', 'online-active-users' ) . '</em></small>';
 					return '<span class="never-dot">●</span> <br />' . $last_seen_text;
 				} else {
 					// wp_date() (not date()) so the display respects the site's configured timezone rather than the server's.
-					$last_seen_text = "<small>Last Seen: <br /><em class='webizito-last-seen' data-timestamp='{$last_seen}'>" . esc_html( wp_date( 'M j, Y @ g:ia', $last_seen ) ) . '</em></small>';
+					$last_seen_text = '<small>' . esc_html__( 'Last Seen:', 'online-active-users' ) . " <br /><em class='webizito-last-seen' data-timestamp='" . esc_attr( $last_seen ) . "'>" . esc_html( wp_date( 'M j, Y @ g:ia', $last_seen ) ) . '</em></small>';
 					return '<span class="offline-dot">●</span> <br />' . $last_seen_text;
 				}
 			}
@@ -127,7 +127,7 @@ class Wpoau_Active_Users {
 	 * @return array
 	 */
 	public function wpoau_user_columns_head( $defaults ) {
-		$defaults['status'] = 'User Online Status';
+		$defaults['status'] = __( 'User Online Status', 'online-active-users' );
 		return $defaults;
 	}
 
@@ -176,7 +176,7 @@ class Wpoau_Active_Users {
 	 * Register the "Active Users" dashboard widget.
 	 */
 	public function wpoau_active_users_metabox() {
-		wp_add_dashboard_widget( 'webizito_active_users', 'Active Users', array( $this, 'wpoau_active_user_dashboard' ) );
+		wp_add_dashboard_widget( 'webizito_active_users', __( 'Active Users', 'online-active-users' ), array( $this, 'wpoau_active_user_dashboard' ) );
 	}
 
 	/**
