@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   compatibility:
-    name: PHP 7.3+ Compatibility
+    name: PHP 8.0+ Compatibility
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code

@@ -5,7 +5,7 @@ Tags: online users, active users, online active users, real-time users, user act
 Requires at least: 6.3
 Tested up to: 7.0
 Stable tag: 3.4.1
-Requires PHP: 7.3
+Requires PHP: 8.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Plugin Name: Online Active Users
