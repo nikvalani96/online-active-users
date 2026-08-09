@@ -4,13 +4,8 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: online users, active users, online active users, real-time users, user activity
 Requires at least: 6.3
 Tested up to: 7.0
-<<<<<<< HEAD
 Stable tag: 3.4.2
 Requires PHP: 7.3
-=======
-Stable tag: 3.4.2
-Requires PHP: 8.0
->>>>>>> 6787572ca56ec987194cf43c0a22faf8b4a659e7
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Plugin Name: Online Active Users
