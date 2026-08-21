@@ -6,7 +6,9 @@
  * Plugin URI: https://wordpress.org/plugins/online-active-users/
  * Description: Monitor and display real-time online users and last seen status on your WordPress site with Online Active Users plugin.
  * Tags: online users, active users, online active users, real-time users, user activity
- * Version: 3.4.2
+ * Version: 3.4.3
+ * Requires at least: 6.3
+ * Requires PHP: 8.0
  * Author: Webizito
  * Author URI: http://webizito.com/
  * Contributors: valani9099
@@ -32,7 +34,7 @@ if ( ! defined( 'WPOAU_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'WPOAU_VERSION' ) ) {
-	define( 'WPOAU_VERSION', '3.4.1' );
+	define( 'WPOAU_VERSION', '3.4.3' );
 }
 
 // class-wpoau-active-users.php replaces the old inc/webi-functions.php (removed): both defined the
