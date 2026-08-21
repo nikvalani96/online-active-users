@@ -13,5 +13,5 @@ if ( ! defined( 'WPOAU_PLUGIN_FILE' ) ) {
 	define( 'WPOAU_PLUGIN_FILE', __DIR__ . '/online-active-users.php' );
 }
 if ( ! defined( 'WPOAU_VERSION' ) ) {
-	define( 'WPOAU_VERSION', '3.4.1' );
+	define( 'WPOAU_VERSION', '3.4.3' );
 }

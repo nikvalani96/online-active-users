@@ -3,9 +3,9 @@ Contributors: valani9099, alkesh7
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=APRNBJUZHRP7G
 Tags: online users, active users, online active users, real-time users, user activity
 Requires at least: 6.3
-Tested up to: 7.0
-Stable tag: 3.4.2
-Requires PHP: 7.3
+Tested up to: 7.1
+Stable tag: 3.4.3
+Requires PHP: 8.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Plugin Name: Online Active Users
@@ -14,7 +14,7 @@ Plugin URI: https://wordpress.org/plugins/online-active-users/
 Author: Webizito
 Author URI: http://webizito.com/
 Text Domain: online-active-users
-Version: 3.4.2
+Version: 3.4.3
 
 Online Active Users is a lightweight, powerful plugin to monitor and display how many users are currently online active on your WordPress website.
 
@@ -93,6 +93,29 @@ We are committed to providing ongoing updates and new features based on user fee
 
 * There are several ways to limit the number of active users on your WordPress website, such as using plugins like WP Limit Login Attempts or Limit Login Attempts Reloaded. These plugins allow you to set limits on the number of login attempts, which can help prevent brute-force attacks and limit the number of active users on your site. 
 
+
+== Third-Party Services ==
+
+This plugin connects to external services to enrich the "Online Active Users" admin list table with an approximate country, timezone, and country flag for each currently-online user, based on their IP address.
+
+**IP geolocation (country, timezone, country code)**
+* Service: ipwho.is (by IPWHOIS.io)
+* When: once per unique IP address, cached for 24 hours, whenever a logged-in user's status is recorded.
+* Data sent: the visiting user's IP address, sent as part of the request URL. No other personal data is sent.
+* Terms of Service: https://ipwhois.io/terms
+* Privacy Policy: https://ipwhois.io/privacy
+
+**Public IP lookup (local/development environments only)**
+* Service: ipify (https://www.ipify.org)
+* When: only as a fallback, when the site is running on localhost (IP resolves to 127.0.0.1 or ::1), to resolve a public IP for display purposes.
+* Data sent: no parameters are sent; the request has no request body or query data.
+
+**Country flag icons**
+* Service: flagcdn.com
+* When: whenever the "Online Active Users" admin list table is displayed, to load a small flag image per country.
+* Data sent: the resolved two-letter country code, sent as part of the image URL requested by the administrator's browser.
+
+None of these services are used for advertising, tracking, or analytics; they are used only to display geolocation context to site administrators.
 
 == Screenshots ==
 
@@ -193,6 +216,13 @@ We are committed to providing ongoing updates and new features based on user fee
 = 3.4.2 =
 * Fix some bug.
 
+= 3.4.3 =
+* Fixed a `Requires PHP` mismatch left over from a botched merge (readme.txt said 7.3, composer.json said 8.0); both the plugin header and readme.txt now correctly state 8.0.
+* Added `Requires at least` and `Requires PHP` to the plugin's own header, not just readme.txt.
+* Removed calls to ip-api.com (its free tier prohibits commercial use, conflicting with this plugin's WooCommerce support, and was requested over plain HTTP); country, country code, and timezone are now all resolved from a single cached HTTPS call to ipwho.is.
+* Added a Third-Party Services section to readme.txt disclosing all external services this plugin calls.
+* Verified WordPress 7.1 compatibility; bumped Tested up to.
+
 
 == Upgrade Notice ==
 
@@ -277,3 +307,6 @@ We are committed to providing ongoing updates and new features based on user fee
 
 = 3.4.2 =
 * Fix some bug.
+
+= 3.4.3 =
+* Fixed Requires PHP mismatch, added Third-Party Services disclosure, and dropped a non-commercial-only geolocation provider. Upgrade recommended.

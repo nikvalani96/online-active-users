@@ -242,17 +242,21 @@ class Wpoau_Active_Users {
 	}
 
 	/**
-	 * Resolve a country name from an IP address, with 24-hour caching.
+	 * Fetch and cache full IP geolocation data (country, country code, timezone) from a single
+	 * ipwho.is lookup, so country/timezone/country-code all share one cached HTTPS request instead
+	 * of hitting three separate endpoints (ipwho.is was already used for country; the other two
+	 * previously called ip-api.com over plain HTTP, whose free tier also forbids commercial use --
+	 * a conflict with this plugin's advertised WooCommerce support).
 	 *
 	 * @param string $ip IP address.
-	 * @return string
+	 * @return array|null Decoded API response, or null on failure/unknown IP.
 	 */
-	public function wpoau_get_user_country( $ip ) {
+	protected function wpoau_get_ip_geodata( $ip ) {
 		if ( 'Unknown' === $ip || empty( $ip ) ) {
-			return 'Unknown';
+			return null;
 		}
 
-		$transient_key = 'wpoau_country_name_' . md5( $ip );
+		$transient_key = 'wpoau_geodata_' . md5( $ip );
 		$cached        = get_transient( $transient_key );
 		if ( false !== $cached ) {
 			return $cached;
@@ -261,20 +265,31 @@ class Wpoau_Active_Users {
 		$response = wp_remote_get( "https://ipwho.is/{$ip}" );
 
 		if ( is_wp_error( $response ) ) {
-			return 'Unknown';
+			return null;
 		}
 
 		$data = json_decode( wp_remote_retrieve_body( $response ), true );
 
-		if ( ! is_array( $data ) || ! $data['success'] ) {
-			return 'Unknown';
+		if ( ! is_array( $data ) || empty( $data['success'] ) ) {
+			return null;
 		}
 
-		$country = $data['country'] ?? 'Unknown';
-		set_transient( $transient_key, $country, 24 * HOUR_IN_SECONDS );
+		set_transient( $transient_key, $data, 24 * HOUR_IN_SECONDS );
 		$this->wpoau_track_transient_key( $transient_key );
 
-		return $country;
+		return $data;
+	}
+
+	/**
+	 * Resolve a country name from an IP address, with 24-hour caching.
+	 *
+	 * @param string $ip IP address.
+	 * @return string
+	 */
+	public function wpoau_get_user_country( $ip ) {
+		$data = $this->wpoau_get_ip_geodata( $ip );
+
+		return ! empty( $data['country'] ) ? $data['country'] : 'Unknown';
 	}
 
 	/**
@@ -284,30 +299,9 @@ class Wpoau_Active_Users {
 	 * @return string
 	 */
 	public function wpoau_get_user_timezone( $ip ) {
-		if ( 'Unknown' === $ip ) {
-			return 'Unknown';
-		}
+		$data = $this->wpoau_get_ip_geodata( $ip );
 
-		$transient_key = 'wpoau_timezone_' . md5( $ip );
-		$cached        = get_transient( $transient_key );
-		if ( false !== $cached ) {
-			return $cached;
-		}
-
-		$response = wp_remote_get( "http://ip-api.com/json/{$ip}?fields=timezone" );
-
-		if ( is_wp_error( $response ) ) {
-			return 'Unknown';
-		}
-
-		$data     = json_decode( wp_remote_retrieve_body( $response ), true );
-		$timezone = isset( $data['timezone'] ) ? $data['timezone'] : 'Unknown';
-
-		// Cache for 24 hours.
-		set_transient( $transient_key, $timezone, 24 * HOUR_IN_SECONDS );
-		$this->wpoau_track_transient_key( $transient_key );
-
-		return $timezone;
+		return ! empty( $data['timezone']['id'] ) ? $data['timezone']['id'] : 'Unknown';
 	}
 
 	/**
@@ -317,34 +311,8 @@ class Wpoau_Active_Users {
 	 * @return string
 	 */
 	public function wpoau_get_user_country_code( $ip ) {
-		if ( 'Unknown' === $ip ) {
-			return 'xx';
-		}
+		$data = $this->wpoau_get_ip_geodata( $ip );
 
-		$transient_key = 'wpoau_country_' . md5( $ip ); // Prevent long key issues.
-
-		// Try getting from transient.
-		$cached_code = get_transient( $transient_key );
-		if ( false !== $cached_code ) {
-			return $cached_code;
-		}
-
-		// Fetch from API.
-		$response = wp_remote_get( "http://ip-api.com/json/{$ip}?fields=countryCode" );
-
-		if ( is_wp_error( $response ) ) {
-			return 'xx';
-		}
-
-		$body = wp_remote_retrieve_body( $response );
-		$data = json_decode( $body, true );
-
-		$code = isset( $data['countryCode'] ) ? strtolower( $data['countryCode'] ) : 'xx';
-
-		// Cache it for 24 hours.
-		set_transient( $transient_key, $code, 24 * HOUR_IN_SECONDS );
-		$this->wpoau_track_transient_key( $transient_key );
-
-		return $code;
+		return ! empty( $data['country_code'] ) ? strtolower( $data['country_code'] ) : 'xx';
 	}
 }
