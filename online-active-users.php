@@ -5,8 +5,8 @@
  * Plugin Title: Online Active Users Plugin
  * Plugin URI: https://wordpress.org/plugins/online-active-users/
  * Description: Monitor and display real-time online users and last seen status on your WordPress site with Online Active Users plugin.
- * Tags: online users, active users, online active users, real-time users, user activity
- * Version: 3.4.3
+ * Tags: online users, active users, user tracking, user status, user activity
+ * Version: 3.4.4
  * Requires at least: 6.3
  * Requires PHP: 8.0
  * Author: Webizito
@@ -247,9 +247,7 @@ if ( ! class_exists( 'Webi_Active_User' ) ) {
 		 * @return array
 		 */
 		public function wpoau_plugin_by_link( $links ) {
-			$url     = 'https://webizito.com/';
-			$links[] = '<a href="' . esc_url( 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=APRNBJUZHRP7G' ) . '" target="_blank"><span style="font-weight: bold;">' . esc_html__( 'Donate', 'online-active-users' ) . '</span></a>';
-			$_link   = '<a href="' . esc_url( $url ) . '" target="_blank">' . esc_html__( 'By', 'online-active-users' ) . ' <span>Webizito</span></a>';
+			$links[] = '<a href="' . esc_url( 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=APRNBJUZHRP7G' ) . '" target="_blank"><span>' . esc_html__( 'Donate', 'online-active-users' ) . '</span></a>';
 			$links[] = $_link;
 			return $links;
 		}
