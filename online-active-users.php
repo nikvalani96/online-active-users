@@ -248,7 +248,6 @@ if ( ! class_exists( 'Webi_Active_User' ) ) {
 		 */
 		public function wpoau_plugin_by_link( $links ) {
 			$links[] = '<a href="' . esc_url( 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=APRNBJUZHRP7G' ) . '" target="_blank"><span>' . esc_html__( 'Donate', 'online-active-users' ) . '</span></a>';
-			$links[] = $_link;
 			return $links;
 		}
 
