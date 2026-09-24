@@ -1,0 +1,16 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "online-active-users/active-users",
+  "version": "3.4.5",
+  "title": "Online Active Users",
+  "category": "widgets",
+  "icon": "groups",
+  "description": "Display the number of currently active logged-in users.",
+  "keywords": ["online users", "active users", "user count"],
+  "textdomain": "online-active-users",
+  "editorScript": "file:./index.js",
+  "supports": {
+    "html": false
+  }
+}

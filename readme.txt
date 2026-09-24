@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: online users, active users, user tracking, user status, user activity
 Requires at least: 6.3
 Tested up to: 7.1
-Stable tag: 3.4.4
+Stable tag: 3.4.5
 Requires PHP: 8.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -14,7 +14,7 @@ Plugin URI: https://wordpress.org/plugins/online-active-users/
 Author: Webizito
 Author URI: http://webizito.com/
 Text Domain: online-active-users
-Version: 3.4.4
+Version: 3.4.5
 
 Online Active Users is a lightweight, powerful plugin to monitor and display how many users are currently online active on your WordPress website.
 
@@ -227,6 +227,10 @@ None of these services are used for advertising, tracking, or analytics; they ar
 * Fix readme.txt file.
 * Fix some bug.
 
+= 3.4.5 =
+* Added the Online Active Users block to display the active user count in the WordPress block editor.
+* Confirmed compatibility with WordPress 7.1. Upgrade immediately.
+
 
 == Upgrade Notice ==
 
@@ -318,3 +322,7 @@ None of these services are used for advertising, tracking, or analytics; they ar
 = 3.4.4 =
 * Fix readme.txt file.
 * Fix some bug. Upgrade recommended.
+
+= 3.4.5 =
+* Added the Online Active Users block to display the active user count in the WordPress block editor.
+* Confirmed compatibility with WordPress 7.1. Upgrade immediately.

@@ -6,7 +6,7 @@
  * Plugin URI: https://wordpress.org/plugins/online-active-users/
  * Description: Monitor and display real-time online users and last seen status on your WordPress site with Online Active Users plugin.
  * Tags: online users, active users, user tracking, user status, user activity
- * Version: 3.4.4
+ * Version: 3.4.5
  * Requires at least: 6.3
  * Requires PHP: 8.0
  * Author: Webizito
@@ -34,7 +34,7 @@ if ( ! defined( 'WPOAU_PLUGIN_FILE' ) ) {
 }
 
 if ( ! defined( 'WPOAU_VERSION' ) ) {
-	define( 'WPOAU_VERSION', '3.4.3' );
+	define( 'WPOAU_VERSION', '3.4.5' );
 }
 
 // class-wpoau-active-users.php replaces the old inc/webi-functions.php (removed): both defined the
@@ -67,6 +67,7 @@ if ( ! class_exists( 'Webi_Active_User' ) ) {
 			register_activation_hook( WPOAU_PLUGIN_FILE, array( $this->wpoau, 'wpoau_users_status_init' ) );
 			add_action( 'init', array( $this->wpoau, 'wpoau_users_status_init' ) );
 			add_action( 'init', array( $this->wpoau, 'webi_track_user_activity' ) );
+			add_action( 'init', array( $this, 'wpoau_register_active_users_block' ) );
 			add_action( 'clear_auth_cookie', array( $this, 'wpoau_user_logout' ) );
 			add_action( 'wp_loaded', array( $this, 'wpoau_enqueue_script' ) );
 			add_action( 'admin_enqueue_scripts', array( $this, 'webi_enqueue_custom_scripts' ) );
@@ -273,6 +274,18 @@ if ( ! class_exists( 'Webi_Active_User' ) ) {
 		 */
 		public function wpoau_delete_transient() {
 			delete_transient( 'users_status' );
+		}
+
+		/**
+		 * Register the Online Active Users Count block.
+		*/
+		public function wpoau_register_active_users_block() {
+			register_block_type(
+				WPOAU_PLUGIN_DIR . '/blocks/active-users',
+				array(
+					'render_callback' => array( $this->wpoau, 'wpoau_active_user' ),
+				)
+			);
 		}
 	}
 }
