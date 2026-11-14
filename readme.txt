@@ -3,7 +3,7 @@ Contributors: valani9099, alkesh7
 Tags: online users, active users, user tracking, user status, user activity
 Requires at least: 6.3
 Tested up to: 7.1.4
-Stable tag: 3.5
+Stable tag: 3.5.0
 Requires PHP: 8.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -13,7 +13,7 @@ Plugin URI: https://wordpress.org/plugins/online-active-users/
 Author: Webizito
 Author URI: https://webizito.com/
 Text Domain: online-active-users
-Version: 3.5
+Version: 3.5.0
 
 Online Active Users is a lightweight, powerful plugin to monitor and display how many users are currently online active on your WordPress website.
 
@@ -268,7 +268,7 @@ Yes, with Pro. Set a start and end time, choose the eligible roles and configure
 * Added the Online Active Users block to display the active user count in the WordPress block editor.
 * Confirmed compatibility with WordPress 7.1. Upgrade immediately.
 
-= 3.5 =
+= 3.5.0 =
 * Added country and timezone lookup controls to enable or disable geolocation from the Active Users screen.
 * Show country, timezone and country filters only when location lookup is enabled.
 * Bundled local country flags and improved handling of unavailable location information.
@@ -380,7 +380,7 @@ Yes, with Pro. Set a start and end time, choose the eligible roles and configure
 * Added the Online Active Users block to display the active user count in the WordPress block editor.
 * Confirmed compatibility with WordPress 7.1. Upgrade immediately.
 
-= 3.5 =
+= 3.5.0 =
 * Added country and timezone lookup controls to enable or disable geolocation from the Active Users screen.
 * Show country, timezone and country filters only when location lookup is enabled.
 * Bundled local country flags and improved handling of unavailable location information.
