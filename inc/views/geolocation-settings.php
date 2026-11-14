@@ -1,8 +1,11 @@
 <?php
 /**
- * Optional country and timezone settings.
+ * Optional country and timezone settings. The controller supplies the view state.
  *
  * @package Online_Active_Users
+ * @var bool  $enabled Whether geolocation is enabled.
+ * @var bool  $managed Whether the setting is controlled by a constant.
+ * @var mixed $error   Whether a geolocation lookup error is present.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -38,7 +41,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<?php elseif ( ! $enabled ) : ?>
 			<p><?php esc_html_e( 'Location lookup is off. Country and timezone columns are hidden. Enable lookup below to display available locations.', 'online-active-users' ); ?></p>
 		<?php endif; ?>
-		<button type="submit" class="button button-primary"><?php echo esc_html( $managed ? __( 'Refresh my location', 'online-active-users' ) : __( ( $enabled ? 'Save location settings' : 'Enable location' ), 'online-active-users' ) ); ?></button>
+		<?php
+		$submit_label = $managed
+			? __( 'Refresh my location', 'online-active-users' )
+			: ( $enabled ? __( 'Save location settings', 'online-active-users' ) : __( 'Enable location', 'online-active-users' ) );
+		?>
+		<button type="submit" class="button button-primary"><?php echo esc_html( $submit_label ); ?></button>
 	</form>
 	</details>
 </section>

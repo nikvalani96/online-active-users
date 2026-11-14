@@ -3,20 +3,24 @@
  * Renders the online users list table on the "Online Active Users" admin page.
  *
  * @package Online_Active_Users
+ * @var WPOAU_User_Directory $directory User list filters and pagination state.
+ * @var array               $users     User activity records for the current page.
+ * @var int                 $online_user_count Current online user count.
  */
-
-// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 
 defined( 'ABSPATH' ) || exit;
 
 global $wpoau_users;
 
 $location_enabled = WPOAU_Privacy::geolocation_enabled();
-$extra_columns = apply_filters( 'wpoau_extra_columns', array() );
-$all_roles     = array_map( static function ( $role ) { return translate_user_role( $role['name'] ); }, wp_roles()->roles );
-$all_countries = array();
-
-// @phpstan-ignore-next-line variable.undefined -- $users is always set by the caller, Webi_Active_User::wpoau_active_users_page(), before requiring this template.
+$extra_columns    = apply_filters( 'wpoau_extra_columns', array() );
+$all_roles        = array_map(
+	static function ( $role ) {
+		return translate_user_role( $role['name'] );
+	},
+	wp_roles()->roles
+);
+$all_countries    = array();
 
 $country_records = get_transient( 'users_status' );
 $country_records = is_array( $country_records ) ? $country_records : array();
@@ -32,10 +36,10 @@ foreach ( $country_records as $u ) {
 	}
 }
 
+// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only table filter; no state changes occur.
 $filter_role = isset( $_GET['filter_role'] ) && is_string( $_GET['filter_role'] ) ? sanitize_key( wp_unslash( $_GET['filter_role'] ) ) : '';
- // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only table filter; no state changes occur.
 $filter_country = $location_enabled && isset( $_GET['filter_country'] ) && is_string( $_GET['filter_country'] ) ? sanitize_text_field( wp_unslash( $_GET['filter_country'] ) ) : '';
- // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 echo '<div class="webi-table-container">';
 echo '<div class="table-header-wrap">';
 echo '<form method="get">
@@ -58,7 +62,7 @@ foreach ( $all_countries as $c ) {
 echo '</select>';
 echo '<button class="button">' . esc_html__( 'Filter', 'online-active-users' ) . '</button>';
 echo '</form>';
-echo '<div class="top-total-user">' . esc_html__( 'Total Online Users:', 'online-active-users' ) . ' ' . absint( $this->wpoau_online_users( 'count' ) ) . '</div>';
+echo '<div class="top-total-user">' . esc_html__( 'Total Online Users:', 'online-active-users' ) . ' ' . absint( $online_user_count ) . '</div>';
 echo '</div>';
 echo '<table class="webi-online-table">';
 echo '<thead><tr>
@@ -70,7 +74,7 @@ echo '<thead><tr>
     <th>' . esc_html__( 'IP Address', 'online-active-users' ) . '</th>
 ';
 $geo_visibility = $location_enabled ? '' : ' hidden';
-echo '<th data-wpoau-geo' . $geo_visibility . '>' . esc_html__( 'Country', 'online-active-users' ) . '</th><th data-wpoau-geo' . $geo_visibility . '>' . esc_html__( 'Timezone', 'online-active-users' ) . '</th>';
+echo '<th data-wpoau-geo' . esc_attr( $geo_visibility ) . '>' . esc_html__( 'Country', 'online-active-users' ) . '</th><th data-wpoau-geo' . esc_attr( $geo_visibility ) . '>' . esc_html__( 'Timezone', 'online-active-users' ) . '</th>';
 
 foreach ( $extra_columns as $label ) {
 	echo '<th>' . esc_html( $label ) . '</th>';
@@ -105,12 +109,12 @@ foreach ( $users as $user ) {
 	echo '<td>' . esc_html( ucfirst( $roles ) ) . '</td>';
 	echo '<td>' . esc_html( 'Unknown' === $ip ? __( 'Unknown', 'online-active-users' ) : $ip ) . '</td>';
 	$flag = WPOAU_Geolocation::flag( $country_code );
-	echo '<td data-wpoau-geo' . $geo_visibility . '>' . $flag . esc_html( 'Unknown' === $country ? __( 'Unavailable', 'online-active-users' ) : $country ) . '</td>';
-	echo '<td data-wpoau-geo' . $geo_visibility . '>' . esc_html( 'Unknown' === $timezone ? __( 'Unavailable', 'online-active-users' ) : $timezone ) . '</td>';
+	echo '<td data-wpoau-geo' . esc_attr( $geo_visibility ) . '>' . wp_kses_post( $flag ) . esc_html( 'Unknown' === $country ? __( 'Unavailable', 'online-active-users' ) : $country ) . '</td>';
+	echo '<td data-wpoau-geo' . esc_attr( $geo_visibility ) . '>' . esc_html( 'Unknown' === $timezone ? __( 'Unavailable', 'online-active-users' ) : $timezone ) . '</td>';
 	do_action( 'wpoau_extra_column_cells', $user );
 	echo '<td class="status-cols-wrap">';
 	$activity_state = WPOAU_User_Directory::activity_state( $is_online, $user['last'] );
-	$status_labels = array(
+	$status_labels  = array(
 		'online'     => __( 'Online Now', 'online-active-users' ),
 		'offline'    => __( 'Offline', 'online-active-users' ),
 		'inactive'   => __( 'Inactive (30+ days)', 'online-active-users' ),
@@ -124,7 +128,9 @@ foreach ( $users as $user ) {
 	echo '</td>';
 	echo '</tr>';
 }
-if ( ! $users ) { echo '<tr><td colspan="' . absint( 9 + count( $extra_columns ) ) . '">No users match these filters.</td></tr>'; }
+if ( ! $users ) {
+	echo '<tr><td colspan="' . absint( 9 + count( $extra_columns ) ) . '">No users match these filters.</td></tr>';
+}
 echo '</tbody>';
 echo '</table>';
 $directory->pagination();

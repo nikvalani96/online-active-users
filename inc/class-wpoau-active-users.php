@@ -4,6 +4,7 @@
  *
  * @package Online_Active_Users
  */
+
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -23,14 +24,12 @@ class Wpoau_Active_Users {
 	 *
 	 * @param Webi_Active_User $main_class Main plugin class instance.
 	 */
-
 	public function __construct( $main_class ) {
 		$this->main_class = $main_class;
 	}
 	/**
 	 * Record the current user's online status, IP, country, and timezone.
 	 */
-
 	public function wpoau_users_status_init() {
 		$logged_in_users = get_transient( 'users_status' );
 		if ( ! is_array( $logged_in_users ) ) {
@@ -42,12 +41,12 @@ class Wpoau_Active_Users {
 			$country                      = $this->wpoau_get_user_country( $ip );
 			$timezone                     = $this->wpoau_get_user_timezone( $ip );
 			$logged_in_users[ $user->ID ] = array(
-				'id'       => $user->ID,
-				'username' => $user->user_login,
-				'last'     => time(),
-				'ip'       => $ip,
-				'country'  => $country,
-				'timezone' => $timezone,
+				'id'           => $user->ID,
+				'username'     => $user->user_login,
+				'last'         => time(),
+				'ip'           => $ip,
+				'country'      => $country,
+				'timezone'     => $timezone,
 				'country_code' => $this->wpoau_get_user_country_code( $ip ),
 			);
 			// Store without expiration, keep refreshing via heartbeat.
@@ -61,7 +60,6 @@ class Wpoau_Active_Users {
 	 * @param int $id User ID.
 	 * @return bool
 	 */
-
 	public function wpoau_is_user_online( $id ) {
 		$logged_in_users = get_transient( 'users_status' );
 		// User is online if found in transient and last activity is within 50 seconds.
@@ -78,7 +76,6 @@ class Wpoau_Active_Users {
 	 * @param int    $id          User ID.
 	 * @return string
 	 */
-
 	public function wpoau_user_columns_content( $value, $column_name, $id ) {
 		if ( 'status' === $column_name ) {
 			if ( $this->wpoau_is_user_online( $id ) ) {
@@ -100,7 +97,6 @@ class Wpoau_Active_Users {
 	/**
 	 * Update the current user's last-seen timestamp on every request.
 	 */
-
 	public function webi_track_user_activity() {
 		if ( is_user_logged_in() ) {
 			$user_id = get_current_user_id();
@@ -113,7 +109,6 @@ class Wpoau_Active_Users {
 	 * @param array $defaults Existing columns.
 	 * @return array
 	 */
-
 	public function wpoau_user_columns_head( $defaults ) {
 		$defaults['status'] = __( 'User Online Status', 'online-active-users' );
 		return $defaults;
@@ -121,7 +116,6 @@ class Wpoau_Active_Users {
 	/**
 	 * Register the [webi_active_user] shortcode.
 	 */
-
 	public function wpoau_active_user_shortcode() {
 		add_shortcode( 'webi_active_user', array( $this, 'wpoau_active_user' ) );
 	}
@@ -130,7 +124,6 @@ class Wpoau_Active_Users {
 	 *
 	 * @return string
 	 */
-
 	public function wpoau_active_user() {
 		ob_start();
 		if ( is_user_logged_in() ) {
@@ -141,7 +134,6 @@ class Wpoau_Active_Users {
 	/**
 	 * Display the active users count in the admin bar.
 	 */
-
 	public function wpoau_admin_bar_link() {
 		global $wp_admin_bar;
 		if ( ! is_super_admin() || ! is_admin_bar_showing() ) {
@@ -162,7 +154,6 @@ class Wpoau_Active_Users {
 	/**
 	 * Register the "Active Users" dashboard widget.
 	 */
-
 	public function wpoau_active_users_metabox() {
 		if ( ! current_user_can( 'list_users' ) ) {
 			return;
@@ -175,9 +166,8 @@ class Wpoau_Active_Users {
 	 * @param mixed $post          Unused. Required by the wp_add_dashboard_widget() callback signature.
 	 * @param mixed $callback_args Unused. Required by the wp_add_dashboard_widget() callback signature.
 	 */
-
 	public function wpoau_active_user_dashboard( $post, $callback_args ) {
- // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
+		unset( $post, $callback_args );
 		$user_count   = count_users();
 		$users_plural = ( 1 === $user_count['total_users'] ) ? __( 'User', 'online-active-users' ) : __( 'Users', 'online-active-users' );
 		$active_users = $this->main_class->wpoau_online_users( 'count' );
@@ -189,7 +179,6 @@ class Wpoau_Active_Users {
 	 *
 	 * @param string $key Transient key.
 	 */
-
 	public function wpoau_track_transient_key( $key ) {
 		$stored_keys = get_option( 'wpoau_transient_keys', array() );
 		if ( ! in_array( $key, $stored_keys, true ) ) {
@@ -202,7 +191,6 @@ class Wpoau_Active_Users {
 	 *
 	 * @return string
 	 */
-
 	public function wpoau_get_user_ip() {
 		$ip_keys = array( 'HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_X_CLUSTER_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR' );
 		foreach ( $ip_keys as $key ) {
@@ -252,7 +240,6 @@ class Wpoau_Active_Users {
 	 * @param string $ip IP address.
 	 * @return array|null Decoded API response, or null on failure/unknown IP.
 	 */
-
 	protected function wpoau_get_ip_geodata( $ip ) {
 		if ( ! WPOAU_Privacy::geolocation_enabled() || ! filter_var( $ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE ) ) {
 			return null;
@@ -281,9 +268,9 @@ class Wpoau_Active_Users {
 			return null;
 		}
 		$data = array(
-			'country' => sanitize_text_field( $data['country'] ),
+			'country'      => sanitize_text_field( $data['country'] ),
 			'country_code' => strtoupper( $data['country_code'] ),
-			'timezone' => array( 'id' => sanitize_text_field( $data['timezone']['id'] ) ),
+			'timezone'     => array( 'id' => sanitize_text_field( $data['timezone']['id'] ) ),
 		);
 		delete_transient( 'wpoau_geo_lookup_error' );
 		set_transient( $transient_key, $data, 24 * HOUR_IN_SECONDS );
@@ -296,7 +283,6 @@ class Wpoau_Active_Users {
 	 * @param string $ip IP address.
 	 * @return string
 	 */
-
 	public function wpoau_get_user_country( $ip ) {
 		$data = $this->wpoau_get_ip_geodata( $ip );
 		return ! empty( $data['country'] ) ? $data['country'] : 'Unknown';
@@ -307,7 +293,6 @@ class Wpoau_Active_Users {
 	 * @param string $ip IP address.
 	 * @return string
 	 */
-
 	public function wpoau_get_user_timezone( $ip ) {
 		$data = $this->wpoau_get_ip_geodata( $ip );
 		return ! empty( $data['timezone']['id'] ) ? $data['timezone']['id'] : 'Unknown';
@@ -318,7 +303,6 @@ class Wpoau_Active_Users {
 	 * @param string $ip IP address.
 	 * @return string
 	 */
-
 	public function wpoau_get_user_country_code( $ip ) {
 		$data = $this->wpoau_get_ip_geodata( $ip );
 		return ! empty( $data['country_code'] ) ? strtolower( $data['country_code'] ) : 'xx';

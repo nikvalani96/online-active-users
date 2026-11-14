@@ -4,14 +4,37 @@
  *
  * @package Online_Active_Users
  */
+
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * Retrieves and paginates registered user activity.
+ */
 final class WPOAU_User_Directory {
-	public $page   = 1;
+	/**
+	 * Current page number.
+	 *
+	 * @var int
+	 */
+	public $page = 1;
+	/**
+	 * Current status filter.
+	 *
+	 * @var string
+	 */
 	public $status = '';
+	/**
+	 * Total number of matching users.
+	 *
+	 * @var int
+	 */
 	private $total = 0;
 
-	/** Fetch one page; last_seen survives logout and transient expiry. */
+	/**
+	 * Fetch one page; last_seen survives logout and transient expiry.
+	 *
+	 * @return array
+	 */
 	public function records() {
 		if ( ! current_user_can( 'list_users' ) ) {
 			return array();
@@ -39,11 +62,14 @@ final class WPOAU_User_Directory {
 			'count_total' => true,
 		);
 		if ( $role ) {
-			$args['role'] = $role; }
+			$args['role'] = $role;
+		}
 		if ( 'online' === $this->status ) {
-			$args['include'] = $online ?: array( 0 ); }
+			$args['include'] = ! empty( $online ) ? $online : array( 0 );
+		}
 		if ( 'offline' === $this->status && $online ) {
-			$args['exclude'] = $online; }
+			$args['exclude'] = $online;
+		}
 		if ( $country ) {
 			$matches         = array_keys(
 				array_filter(
@@ -54,7 +80,7 @@ final class WPOAU_User_Directory {
 				)
 			);
 			$args['include'] = isset( $args['include'] ) ? array_values( array_intersect( $args['include'], $matches ) ) : $matches;
-			$args['include'] = $args['include'] ?: array( 0 );
+			$args['include'] = ! empty( $args['include'] ) ? $args['include'] : array( 0 );
 		}
 		$query       = new WP_User_Query( $args );
 		$this->total = $query->get_total();
@@ -72,13 +98,24 @@ final class WPOAU_User_Directory {
 		return $rows;
 	}
 
-	/** Read scalar query filters without accepting array input. */
+	/**
+	 * Read a scalar query filter without accepting array input.
+	 *
+	 * @param string $name Query parameter name.
+	 * @return string
+	 */
 	private static function filter( $name ) {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only directory filter.
-		return isset( $_GET[ $name ] ) && is_string( $_GET[ $name ] ) ? wp_unslash( $_GET[ $name ] ) : '';
+		return isset( $_GET[ $name ] ) && is_string( $_GET[ $name ] ) ? sanitize_text_field( wp_unslash( $_GET[ $name ] ) ) : '';
 	}
 
-	/** Classify activity; online presence always takes priority over age. */
+	/**
+	 * Classify activity; online presence always takes priority over age.
+	 *
+	 * @param bool $online    Whether the user is currently online.
+	 * @param int  $last_seen Last activity timestamp.
+	 * @return string
+	 */
 	public static function activity_state( $online, $last_seen ) {
 		if ( $online ) {
 			return 'online';
@@ -89,7 +126,11 @@ final class WPOAU_User_Directory {
 		return (int) $last_seen <= time() - 30 * DAY_IN_SECONDS ? 'inactive' : 'offline';
 	}
 
-	/** Render escaped WordPress pagination preserving current filters. */
+	/**
+	 * Render escaped WordPress pagination preserving current filters.
+	 *
+	 * @return void
+	 */
 	public function pagination() {
 		$links = paginate_links(
 			array(
@@ -99,6 +140,8 @@ final class WPOAU_User_Directory {
 				'total'   => (int) ceil( $this->total / 25 ),
 			)
 		);
-		echo '<div class="tablenav"><span>' . esc_html( sprintf( __( '%d users match these filters', 'online-active-users' ), $this->total ) ) . '</span> ' . wp_kses_post( (string) $links ) . '</div>';
+		/* translators: %d: Number of users matching the active filters. */
+		$message = sprintf( __( '%d users match these filters', 'online-active-users' ), $this->total );
+		echo '<div class="tablenav"><span>' . esc_html( $message ) . '</span> ' . wp_kses_post( (string) $links ) . '</div>';
 	}
 }

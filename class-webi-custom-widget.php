@@ -4,6 +4,7 @@
  *
  * @package Online_Active_Users
  */
+
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -64,6 +65,7 @@ if ( ! class_exists( 'Webi_Custom_Widget' ) ) {
 				<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
 			</p>
 			<?php
+				return null;
 		}
 		/**
 		 * Sanitize and save widget settings.
@@ -73,7 +75,7 @@ if ( ! class_exists( 'Webi_Custom_Widget' ) ) {
 		 * @return array
 		 */
 		public function update( $new_instance, $old_instance ) {
- // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
+			unset( $old_instance );
 			$instance          = array();
 			$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? wp_strip_all_tags( $new_instance['title'] ) : '';
 			return $instance;

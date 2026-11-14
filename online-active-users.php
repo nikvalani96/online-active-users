@@ -30,7 +30,7 @@ if ( ! defined( 'WPOAU_PLUGIN_FILE' ) ) {
 	define( 'WPOAU_PLUGIN_FILE', __FILE__ );
 }
 if ( ! defined( 'WPOAU_VERSION' ) ) {
-	define( 'WPOAU_VERSION', '3.5.0' );
+	define( 'WPOAU_VERSION', '3.5.1' );
 }
 // class-wpoau-active-users.php replaces the old inc/webi-functions.php (removed): both defined the
 // same Wpoau_Active_Users class, and this one has the escaping/i18n/WPCS fixes applied.
@@ -170,6 +170,7 @@ if ( ! class_exists( 'Webi_Active_User' ) ) {
 			require_once WPOAU_PLUGIN_DIR . '/inc/class-wpoau-user-directory.php';
 			$directory = new WPOAU_User_Directory();
 			$users = $directory->records();
+			$online_user_count = absint( $this->wpoau_online_users( 'count' ) );
 			require_once WPOAU_PLUGIN_DIR . '/inc/user-list-table.php';
 		}
 
@@ -208,7 +209,7 @@ if ( ! class_exists( 'Webi_Active_User' ) ) {
 		 */
 
 		public function wpoau_support_and_faq_links( $links_array, $plugin_file_name, $plugin_data, $status ) {
- 			// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
+			unset( $plugin_data, $status );
 			if ( strpos( $plugin_file_name, basename( WPOAU_PLUGIN_FILE ) ) ) {
 				// You can still use `array_unshift()` to add links at the beginning.
 				$links_array[] = '<a href="' . esc_url( WPOAU_Hub::docs_url() ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Docs', 'online-active-users' ) . '</a>';

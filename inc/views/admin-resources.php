@@ -2,7 +2,7 @@
 /**
  * Shared documentation and support links for the Pro admin tabs.
  *
- * @package WPOAU
+ * @package Online_Active_Users
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

@@ -3,6 +3,10 @@
  * Pro discovery screen. Variables supplied by WPOAU_Addons::render().
  *
  * @package Online_Active_Users
+ * @var string $buy_url    Pro purchase URL.
+ * @var string $docs_url   Documentation URL.
+ * @var string $contact_url Support URL.
+ * @var array  $features   Available Pro feature descriptions.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

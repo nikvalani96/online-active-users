@@ -25,8 +25,10 @@ final class WPOAU_Addons {
 	/** Enqueue only on the free add-ons screen. */
 	public function assets(): void {
 		// Read-only routing; no settings or user data are changed.
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only admin page routing.
 		$page = isset( $_GET['page'] ) && is_string( $_GET['page'] ) ? sanitize_key( wp_unslash( $_GET['page'] ) ) : '';
-		$tab  = isset( $_GET['tab'] ) && is_string( $_GET['tab'] ) ? sanitize_key( wp_unslash( $_GET['tab'] ) ) : '';
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only admin tab routing.
+		$tab = isset( $_GET['tab'] ) && is_string( $_GET['tab'] ) ? sanitize_key( wp_unslash( $_GET['tab'] ) ) : '';
 		if ( self::pro_loaded() || ! current_user_can( 'manage_options' ) || ! current_user_can( 'list_users' ) || 'wpoau-active-users' !== $page || 'addons' !== $tab ) {
 			return;
 		}
@@ -37,15 +39,15 @@ final class WPOAU_Addons {
 	public static function features(): array {
 		return array(
 			array(
-				'icon' => 'desktop',
-				'title' => __( 'Understand browser sessions', 'online-active-users' ),
-				'text' => __( 'See estimated devices, current page paths and activity for signed-in users.', 'online-active-users' ),
+				'icon'   => 'desktop',
+				'title'  => __( 'Understand browser sessions', 'online-active-users' ),
+				'text'   => __( 'See estimated devices, current page paths and activity for signed-in users.', 'online-active-users' ),
 				'points' => array( __( 'Optional login limits and session logout', 'online-active-users' ), __( 'Administrator-targeted session details', 'online-active-users' ) ),
 			),
 			array(
-				'icon' => 'megaphone',
-				'title' => __( 'Keep online users informed', 'online-active-users' ),
-				'text' => __( 'Display a maintenance notice or website update without sending email.', 'online-active-users' ),
+				'icon'   => 'megaphone',
+				'title'  => __( 'Keep online users informed', 'online-active-users' ),
+				'text'   => __( 'Display a maintenance notice or website update without sending email.', 'online-active-users' ),
 				'points' => array( __( 'Scheduled announcement banner', 'online-active-users' ), __( 'Role targeting and optional dismissal', 'online-active-users' ) ),
 			),
 			array(
@@ -92,9 +94,9 @@ final class WPOAU_Addons {
 		if ( self::pro_loaded() || ! current_user_can( 'manage_options' ) || ! current_user_can( 'list_users' ) ) {
 			return;
 		}
-		$features = self::features();
-		$buy_url  = WPOAU_Hub::buy_url();
-		$docs_url = WPOAU_Hub::docs_url();
+		$features    = self::features();
+		$buy_url     = WPOAU_Hub::buy_url();
+		$docs_url    = WPOAU_Hub::docs_url();
 		$contact_url = WPOAU_Hub::contact_url();
 		require __DIR__ . '/views/addons.php';
 	}
