@@ -1,0 +1,3 @@
+Country flag SVGs from flag-icons by lipis and contributors.
+https://github.com/lipis/flag-icons
+MIT License; see LICENSE. Retrieved 2026-10-31.

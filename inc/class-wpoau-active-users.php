@@ -4,49 +4,43 @@
  *
  * @package Online_Active_Users
  */
-
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-
 /**
  * Tracks online users and renders their status across wp-admin.
  */
 class Wpoau_Active_Users {
-
 	/**
 	 * Main plugin class instance.
 	 *
 	 * @var Webi_Active_User
 	 */
 	protected $main_class;
-
 	/**
 	 * Constructor.
 	 *
 	 * @param Webi_Active_User $main_class Main plugin class instance.
 	 */
+
 	public function __construct( $main_class ) {
 		$this->main_class = $main_class;
 	}
-
 	/**
 	 * Record the current user's online status, IP, country, and timezone.
 	 */
+
 	public function wpoau_users_status_init() {
 		$logged_in_users = get_transient( 'users_status' );
-
 		if ( ! is_array( $logged_in_users ) ) {
 			$logged_in_users = array();
 		}
-
 		$user = wp_get_current_user();
 		if ( $user->ID ) {
-			$ip       = $this->wpoau_get_user_ip();
-			$country  = $this->wpoau_get_user_country( $ip );
-			$timezone = $this->wpoau_get_user_timezone( $ip );
-
+			$ip                           = $this->wpoau_get_user_ip();
+			$country                      = $this->wpoau_get_user_country( $ip );
+			$timezone                     = $this->wpoau_get_user_timezone( $ip );
 			$logged_in_users[ $user->ID ] = array(
 				'id'       => $user->ID,
 				'username' => $user->user_login,
@@ -54,33 +48,28 @@ class Wpoau_Active_Users {
 				'ip'       => $ip,
 				'country'  => $country,
 				'timezone' => $timezone,
+				'country_code' => $this->wpoau_get_user_country_code( $ip ),
 			);
-
 			// Store without expiration, keep refreshing via heartbeat.
 			set_transient( 'users_status', $logged_in_users );
 			update_user_meta( $user->ID, 'last_seen', time() );
 		}
 	}
-
 	/**
 	 * Check if a user has been online in the last 50 seconds.
 	 *
 	 * @param int $id User ID.
 	 * @return bool
 	 */
+
 	public function wpoau_is_user_online( $id ) {
 		$logged_in_users = get_transient( 'users_status' );
-
 		// User is online if found in transient and last activity is within 50 seconds.
 		if ( isset( $logged_in_users[ $id ] ) && $logged_in_users[ $id ]['last'] > time() - 50 ) {
 			return true;
 		}
-
-		// Fallback: Check user meta if transient fails.
-		$last_seen = get_user_meta( $id, 'last_seen', true );
-		return ( $last_seen && $last_seen > time() - 50 );
+		return false;
 	}
-
 	/**
 	 * Render the "status" column content on the Users list table.
 	 *
@@ -89,13 +78,13 @@ class Wpoau_Active_Users {
 	 * @param int    $id          User ID.
 	 * @return string
 	 */
+
 	public function wpoau_user_columns_content( $value, $column_name, $id ) {
 		if ( 'status' === $column_name ) {
 			if ( $this->wpoau_is_user_online( $id ) ) {
 				return '<span class="online-logged-in">●</span> <br /><small><em>' . esc_html__( 'Online Now', 'online-active-users' ) . '</em></small>';
 			} else {
 				$last_seen = get_user_meta( $id, 'last_seen', true );
-
 				if ( ! $last_seen ) {
 					$last_seen_text = '<small><em>' . esc_html__( 'Never Logged In', 'online-active-users' ) . '</em></small>';
 					return '<span class="never-dot">●</span> <br />' . $last_seen_text;
@@ -106,43 +95,42 @@ class Wpoau_Active_Users {
 				}
 			}
 		}
-
 		return $value;
 	}
-
 	/**
 	 * Update the current user's last-seen timestamp on every request.
 	 */
+
 	public function webi_track_user_activity() {
 		if ( is_user_logged_in() ) {
 			$user_id = get_current_user_id();
 			update_user_meta( $user_id, 'last_seen', time() );
 		}
 	}
-
 	/**
 	 * Add the "status" column to the Users list table.
 	 *
 	 * @param array $defaults Existing columns.
 	 * @return array
 	 */
+
 	public function wpoau_user_columns_head( $defaults ) {
 		$defaults['status'] = __( 'User Online Status', 'online-active-users' );
 		return $defaults;
 	}
-
 	/**
 	 * Register the [webi_active_user] shortcode.
 	 */
+
 	public function wpoau_active_user_shortcode() {
 		add_shortcode( 'webi_active_user', array( $this, 'wpoau_active_user' ) );
 	}
-
 	/**
 	 * Render the [webi_active_user] shortcode output.
 	 *
 	 * @return string
 	 */
+
 	public function wpoau_active_user() {
 		ob_start();
 		if ( is_user_logged_in() ) {
@@ -150,10 +138,10 @@ class Wpoau_Active_Users {
 		}
 		return ob_get_clean();
 	}
-
 	/**
 	 * Display the active users count in the admin bar.
 	 */
+
 	public function wpoau_admin_bar_link() {
 		global $wp_admin_bar;
 		if ( ! is_super_admin() || ! is_admin_bar_showing() ) {
@@ -171,36 +159,37 @@ class Wpoau_Active_Users {
 			)
 		);
 	}
-
 	/**
 	 * Register the "Active Users" dashboard widget.
 	 */
+
 	public function wpoau_active_users_metabox() {
+		if ( ! current_user_can( 'list_users' ) ) {
+			return;
+		}
 		wp_add_dashboard_widget( 'webizito_active_users', __( 'Active Users', 'online-active-users' ), array( $this, 'wpoau_active_user_dashboard' ) );
 	}
-
 	/**
 	 * Render the "Active Users" dashboard widget content.
 	 *
 	 * @param mixed $post          Unused. Required by the wp_add_dashboard_widget() callback signature.
 	 * @param mixed $callback_args Unused. Required by the wp_add_dashboard_widget() callback signature.
 	 */
-	public function wpoau_active_user_dashboard( $post, $callback_args ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
+
+	public function wpoau_active_user_dashboard( $post, $callback_args ) {
+ // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
 		$user_count   = count_users();
 		$users_plural = ( 1 === $user_count['total_users'] ) ? __( 'User', 'online-active-users' ) : __( 'Users', 'online-active-users' );
-
 		$active_users = $this->main_class->wpoau_online_users( 'count' );
-
-		echo '<div><a href="' . esc_url( admin_url( 'users.php?page=wpoau-active-users' ) ) . '">' . absint( $user_count['total_users'] ) . ' ' . esc_html( $users_plural ) . '</a> <small>(' . absint( $active_users ) . ' ' . esc_html__( 'currently active', 'online-active-users' ) . ')</small>
-              <br />
-              <strong><a href="' . esc_url( 'https://wordpress.org/support/plugin/online-active-users/reviews/?rate=5#new-post' ) . '" target="_blank">' . esc_html__( 'Rate our plugin', 'online-active-users' ) . ' &nbsp;<span style="color:#ffb900;font-size: 18px;position:relative;top:0.1em;">★★★★★</span></a></strong></div>';
+		echo '<div><a href="' . esc_url( admin_url( 'users.php?page=wpoau-active-users' ) ) . '">' . absint( $user_count['total_users'] ) . ' ' . esc_html( $users_plural ) . '</a> <small>(' . absint( $active_users ) . ' ' . esc_html__( 'currently active', 'online-active-users' ) . ')</small></div>';
+		do_action( 'wpoau_dashboard_session_summary' );
 	}
-
 	/**
 	 * Track a transient key in options so it can be cleaned up on uninstall.
 	 *
 	 * @param string $key Transient key.
 	 */
+
 	public function wpoau_track_transient_key( $key ) {
 		$stored_keys = get_option( 'wpoau_transient_keys', array() );
 		if ( ! in_array( $key, $stored_keys, true ) ) {
@@ -208,39 +197,51 @@ class Wpoau_Active_Users {
 			update_option( 'wpoau_transient_keys', $stored_keys );
 		}
 	}
-
 	/**
 	 * Determine the current user's IP address.
 	 *
 	 * @return string
 	 */
+
 	public function wpoau_get_user_ip() {
 		$ip_keys = array( 'HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_X_CLUSTER_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR' );
-
 		foreach ( $ip_keys as $key ) {
 			if ( ! empty( $_SERVER[ $key ] ) ) {
 				// Note: all of these headers except REMOTE_ADDR are client-supplied and can be spoofed;
 				// this IP is used for display only and must not be relied on for access control.
 				$ip_list = explode( ',', sanitize_text_field( wp_unslash( $_SERVER[ $key ] ) ) );
 				$ip      = trim( $ip_list[0] );
-
-				// If IP is ::1 (localhost IPv6), convert to 127.0.0.1 or fetch public IP for dev.
-				if ( '::1' === $ip || '127.0.0.1' === $ip ) {
-					$response = wp_remote_get( 'https://api.ipify.org?format=json' );
-					if ( ! is_wp_error( $response ) ) {
-						$data = json_decode( wp_remote_retrieve_body( $response ), true );
-						if ( isset( $data['ip'] ) ) {
-							return $data['ip'];
+				// A loopback address has no public location. Only developer testing may
+				// substitute this installation's internet-facing IP for a local preview.
+				if ( in_array( $ip, array( '::1', '127.0.0.1' ), true ) && WPOAU_Privacy::developer_testing() && WPOAU_Privacy::geolocation_enabled() ) {
+					$public_ip = get_transient( 'wpoau_developer_public_ip' );
+					if ( false === $public_ip ) {
+						$public_ip = '';
+						$response  = wp_safe_remote_get(
+							'https://api.ipify.org?format=json',
+							array(
+								'timeout'     => 5,
+								'redirection' => 0,
+							)
+						);
+						if ( ! is_wp_error( $response ) && 200 === wp_remote_retrieve_response_code( $response ) ) {
+							$data      = json_decode( wp_remote_retrieve_body( $response ), true );
+							$candidate = is_array( $data ) ? ( $data['ip'] ?? '' ) : '';
+							if ( is_string( $candidate ) && filter_var( $candidate, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE ) ) {
+								$public_ip = $candidate;
+							}
 						}
+						set_transient( 'wpoau_developer_public_ip', $public_ip, $public_ip ? HOUR_IN_SECONDS : MINUTE_IN_SECONDS );
+					}
+					if ( $public_ip ) {
+						return $public_ip;
 					}
 				}
 				return $ip;
 			}
 		}
-
 		return 'Unknown';
 	}
-
 	/**
 	 * Fetch and cache full IP geolocation data (country, country code, timezone) from a single
 	 * ipwho.is lookup, so country/timezone/country-code all share one cached HTTPS request instead
@@ -251,68 +252,75 @@ class Wpoau_Active_Users {
 	 * @param string $ip IP address.
 	 * @return array|null Decoded API response, or null on failure/unknown IP.
 	 */
+
 	protected function wpoau_get_ip_geodata( $ip ) {
-		if ( 'Unknown' === $ip || empty( $ip ) ) {
+		if ( ! WPOAU_Privacy::geolocation_enabled() || ! filter_var( $ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE ) ) {
 			return null;
 		}
-
 		$transient_key = 'wpoau_geodata_' . md5( $ip );
 		$cached        = get_transient( $transient_key );
 		if ( false !== $cached ) {
 			return $cached;
 		}
-
-		$response = wp_remote_get( "https://ipwho.is/{$ip}" );
-
-		if ( is_wp_error( $response ) ) {
+		$response = wp_safe_remote_get(
+			'https://ipwho.is/' . rawurlencode( $ip ),
+			array(
+				'timeout'     => 5,
+				'redirection' => 0,
+			)
+		);
+		if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
+			set_transient( $transient_key, array(), MINUTE_IN_SECONDS );
+			set_transient( 'wpoau_geo_lookup_error', 1, 5 * MINUTE_IN_SECONDS );
 			return null;
 		}
-
 		$data = json_decode( wp_remote_retrieve_body( $response ), true );
-
-		if ( ! is_array( $data ) || empty( $data['success'] ) ) {
+		if ( ! is_array( $data ) || empty( $data['success'] ) || ! is_string( $data['country'] ?? null ) || ! is_string( $data['timezone']['id'] ?? null ) || ! is_string( $data['country_code'] ?? null ) || ! preg_match( '/^[a-z]{2}$/iD', $data['country_code'] ) ) {
+			set_transient( $transient_key, array(), MINUTE_IN_SECONDS );
+			set_transient( 'wpoau_geo_lookup_error', 1, 5 * MINUTE_IN_SECONDS );
 			return null;
 		}
-
+		$data = array(
+			'country' => sanitize_text_field( $data['country'] ),
+			'country_code' => strtoupper( $data['country_code'] ),
+			'timezone' => array( 'id' => sanitize_text_field( $data['timezone']['id'] ) ),
+		);
+		delete_transient( 'wpoau_geo_lookup_error' );
 		set_transient( $transient_key, $data, 24 * HOUR_IN_SECONDS );
 		$this->wpoau_track_transient_key( $transient_key );
-
 		return $data;
 	}
-
 	/**
 	 * Resolve a country name from an IP address, with 24-hour caching.
 	 *
 	 * @param string $ip IP address.
 	 * @return string
 	 */
+
 	public function wpoau_get_user_country( $ip ) {
 		$data = $this->wpoau_get_ip_geodata( $ip );
-
 		return ! empty( $data['country'] ) ? $data['country'] : 'Unknown';
 	}
-
 	/**
 	 * Resolve a timezone from an IP address, with 24-hour caching.
 	 *
 	 * @param string $ip IP address.
 	 * @return string
 	 */
+
 	public function wpoau_get_user_timezone( $ip ) {
 		$data = $this->wpoau_get_ip_geodata( $ip );
-
 		return ! empty( $data['timezone']['id'] ) ? $data['timezone']['id'] : 'Unknown';
 	}
-
 	/**
 	 * Resolve a lowercase country code from an IP address, with 24-hour caching.
 	 *
 	 * @param string $ip IP address.
 	 * @return string
 	 */
+
 	public function wpoau_get_user_country_code( $ip ) {
 		$data = $this->wpoau_get_ip_geodata( $ip );
-
 		return ! empty( $data['country_code'] ) ? strtolower( $data['country_code'] ) : 'xx';
 	}
 }

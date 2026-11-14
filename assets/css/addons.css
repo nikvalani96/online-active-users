@@ -1,0 +1,78 @@
+/* Scoped Pro discovery styles. No scripts, external fonts or images. */
+.users_page_wpoau-active-users .wpoau-addons {
+    --wa-brand: #e61f57;
+    --wa-ink: #182230;
+    --wa-copy: #475467;
+    margin: 0 20px 28px 0;
+    color: var(--wa-ink);
+}
+.wpoau-addons *, .wpoau-addons *::before, .wpoau-addons *::after { box-sizing: border-box; }
+.wpoau-addons h2, .wpoau-addons h3 { color: var(--wa-ink); }
+.wpoau-addons p { color: var(--wa-copy); font-size: 14px; line-height: 1.75; }
+.wpoau-addons-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(260px, 1fr);
+    gap: 48px;
+    align-items: center;
+    padding: clamp(24px, 3vw, 48px);
+    border: 1px solid #f5dce4;
+    border-radius: 18px;
+    background: #fff8fa;
+}
+.wpoau-addons .wpoau-addons-kicker { color: #b81443; font-size: 11px; letter-spacing: 1.5px; font-weight: 700; margin: 0 0 14px; }
+.wpoau-addons-hero h2 { font-size: clamp(26px, 2.4vw, 38px); line-height: 1.2; letter-spacing: -.7px; max-width: 650px; margin: 0 0 18px; }
+.wpoau-addons .wpoau-addons-lead { max-width: 620px; font-size: 16px; margin: 0 0 24px; }
+.wpoau-addons-actions { display: flex; flex-wrap: wrap; gap: 14px 22px; align-items: center; }
+.wpoau-addons a.wpoau-addons-primary {
+    display: inline-flex; align-items: center; justify-content: center; gap: 12px;
+    background: var(--wa-brand); border: 1px solid var(--wa-brand); border-radius: 9px;
+    padding: 13px 22px; color: #fff; font-size: 14px; font-weight: 700; line-height: 1.5;
+    text-decoration: none; white-space: nowrap;
+}
+.wpoau-addons a.wpoau-addons-primary:hover { background: #c91849; border-color: #c91849; color: #fff; }
+.wpoau-addons .wpoau-addons-primary .dashicons { font-size: 18px; width: 18px; height: 18px; }
+.wpoau-addons a.wpoau-addons-secondary { color: #a9123d; font-weight: 600; text-underline-offset: 4px; }
+.wpoau-addons a:focus-visible { outline: 2px solid var(--wa-brand); outline-offset: 4px; box-shadow: none; }
+.wpoau-addons .wpoau-addons-caption { font-size: 12px; margin: 16px 0 0; }
+.wpoau-addons-summary { background: #fff; border: 1px solid #f0e0e5; border-radius: 14px; padding: 28px; box-shadow: 0 8px 24px #18223006; }
+.wpoau-addons-summary-icon, .wpoau-addons-feature-icon { display: inline-flex; align-items: center; justify-content: center; border-radius: 12px; background: #fff0f4; color: #b81443; }
+.wpoau-addons-summary-icon { width: 54px; height: 54px; font-size: 29px; }
+.wpoau-addons-summary h3 { font-size: 19px; margin: 20px 0 16px; }
+.wpoau-addons-summary ul, .wpoau-addons-card ul { margin: 0; padding: 0; list-style: none; }
+.wpoau-addons-summary li, .wpoau-addons-card li { display: flex; gap: 9px; align-items: flex-start; line-height: 1.6; margin: 10px 0; color: var(--wa-copy); }
+.wpoau-addons li .dashicons { color: #b81443; flex-shrink: 0; margin-top: 2px; }
+.wpoau-addons-section-heading { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin: 36px 0 20px; }
+.wpoau-addons-section-heading h2 { margin: 0 0 8px; font-size: 23px; line-height: 1.3; }
+.wpoau-addons-section-heading p { margin: 0; }
+.wpoau-addons-included { background: #fff; border: 1px solid #ead5dc; color: #a9123d; border-radius: 30px; padding: 8px 14px; font-size: 12px; font-weight: 600; }
+.wpoau-addons-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.wpoau-addons-card { border: 1px solid #e4e7ec; background: #fff; border-radius: 14px; padding: 26px; }
+.wpoau-addons-feature-icon { width: 44px; height: 44px; font-size: 23px; }
+.wpoau-addons-card h3 { font-size: 18px; line-height: 1.4; margin: 18px 0 10px; }
+.wpoau-addons-card p { margin: 0 0 20px; }
+.wpoau-addons-card li { font-size: 13px; }
+.wpoau-addons-resources { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 28px; align-items: center; margin-top: 26px; padding: 28px; border: 1px solid #f5dce4; border-radius: 14px; background: #fff8fa; }
+.wpoau-addons-resources-copy .wpoau-addons-kicker { margin: 0 0 8px; }
+.wpoau-addons-resources h2 { margin: 0 0 8px; font-size: 22px; line-height: 1.35; }
+.wpoau-addons-resources-copy > p:last-child { margin: 0; }
+.wpoau-addons-resources-links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.wpoau-addons-resources-links a { display: grid; grid-template-columns: 20px minmax(0, 1fr) 16px; gap: 10px; align-items: start; padding: 15px 13px; border: 1px solid #eedce2; border-radius: 10px; background: #fff; color: var(--wa-ink); text-decoration: none; }
+.wpoau-addons-resources-links a:hover { border-color: #e66a8b; color: #a9123d; }
+.wpoau-addons-resources-links .dashicons { color: #b81443; }
+.wpoau-addons-resources-links strong, .wpoau-addons-resources-links small { display: block; }
+.wpoau-addons-resources-links small { margin-top: 3px; color: var(--wa-copy); font-size: 12px; }
+.wpoau-addons-start { margin-top: 26px; padding: 28px; background: #fff; border: 1px solid #e4e7ec; border-radius: 14px; }
+.wpoau-addons-start h2 { font-size: 21px; margin: 0 0 24px; }
+.wpoau-addons-start ol { counter-reset: wa-step; list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin: 0; padding: 0; }
+.wpoau-addons-start li { position: relative; padding-inline-start: 44px; }
+.wpoau-addons-start li::before { counter-increment: wa-step; content: counter(wa-step); position: absolute; inset-inline-start: 0; top: 0; width: 30px; height: 30px; display: grid; place-items: center; background: #fff0f4; border-radius: 50%; color: #a9123d; font-weight: 700; }
+.wpoau-addons-start strong { display: block; font-size: 14px; margin-bottom: 8px; }
+.wpoau-addons-start li span { display: block; color: var(--wa-copy); line-height: 1.65; font-size: 13px; }
+.wpoau-addons-bottom { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px; border: 1px solid #f5dce4; border-radius: 14px; padding: 28px; margin-top: 26px; background: #fff8fa; }
+.wpoau-addons-bottom h2 { font-size: 22px; line-height: 1.4; margin: 0 0 8px; }
+.wpoau-addons-bottom p { margin: 0; }
+.wpoau-addons .wpoau-addons-existing { text-align: center; margin: 20px 0; font-size: 13px; }
+.wpoau-addons-existing a { color: #a9123d; text-underline-offset: 3px; }
+@media (max-width: 1200px) { .wpoau-addons-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 900px) { .wpoau-addons-hero, .wpoau-addons-resources { grid-template-columns: 1fr; gap: 26px; } .wpoau-addons-start ol { grid-template-columns: 1fr; } }
+@media (max-width: 600px) { .wpoau-addons-grid, .wpoau-addons-resources-links { grid-template-columns: 1fr; } .wpoau-addons-card, .wpoau-addons-resources { padding: 22px; } .wpoau-addons-bottom { padding: 24px; } .wpoau-addons .wpoau-addons-primary { white-space: normal; } }

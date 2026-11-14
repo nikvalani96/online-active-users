@@ -5,7 +5,6 @@
  *
  * @package Online_Active_Users
  */
-
 return array(
 	'dependencies' => array(
 		'wp-blocks',
@@ -14,5 +13,5 @@ return array(
 		'wp-components',
 		'wp-server-side-render',
 	),
-	'version'      => '3.4.5',
+	'version'      => '3.5',
 );

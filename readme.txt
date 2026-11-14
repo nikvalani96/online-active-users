@@ -1,10 +1,9 @@
 === Online Active Users ===
 Contributors: valani9099, alkesh7
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=APRNBJUZHRP7G
 Tags: online users, active users, user tracking, user status, user activity
 Requires at least: 6.3
-Tested up to: 7.1
-Stable tag: 3.4.5
+Tested up to: 7.1.4
+Stable tag: 3.5
 Requires PHP: 8.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -12,9 +11,9 @@ Plugin Name: Online Active Users
 Plugin Title: Online Active Users Plugin
 Plugin URI: https://wordpress.org/plugins/online-active-users/
 Author: Webizito
-Author URI: http://webizito.com/
+Author URI: https://webizito.com/
 Text Domain: online-active-users
-Version: 3.4.5
+Version: 3.5
 
 Online Active Users is a lightweight, powerful plugin to monitor and display how many users are currently online active on your WordPress website.
 
@@ -59,6 +58,27 @@ Ideal for website owners who want to enhance site security, track active session
 * **Easy to Use & Lightweight:** Minimal setup with a clean interface that won’t slow down your website.
 * **Flexible Display Options:** Use shortcode to show online user counts anywhere on your site, compatible with all page builders.
 
+**WP Online Active Users Pro**
+
+Go beyond online-user tracking with WP Online Active Users Pro. Understand browser sessions, welcome returning users, manage support conversations and collect feedback from your WordPress website.
+
+**Pro features include:**
+
+* **Welcome-back notifications** — Create messages for returning users with inactivity rules, cooldowns and role targeting.
+* **Support chat** — Manage customer conversations from your support inbox, with configurable AI-assisted replies and human handoff.
+* **Feedback campaigns** — Collect ratings and written feedback with audience, timing and frequency controls.
+* **Browser and session insights** — Review devices, browsers, recent page activity and login details.
+* **Session controls — Configure** login limits and idle logout.
+* **Announcements** — Publish scheduled messages with audience targeting and customizable appearance.
+* **Activity exports** — Filter registered users and export selected activity details and feature summaries as CSV or locally generated PDF reports.
+
+WP Online Active Users Pro is a paid add-on installed separately alongside this free plugin. The free plugin's core tracking and display features remain available without purchasing Pro.
+
+AI-assisted replies require your own supported provider account and API key. When enabled, relevant conversation content is sent to the selected provider, subject to its terms and privacy policy. API usage is billed separately by your provider.
+
+Unlock advanced user activity and engagement tools with [WP Online Active Users Pro](https://webizito.com/online-active-users/).
+
+
 **Support**
 We are committed to providing ongoing updates and new features based on user feedback. For support, feature requests, or bug reports, please visit our [support forum](https://wordpress.org/support/plugin/online-active-users/ "support forum").
 
@@ -89,33 +109,50 @@ We are committed to providing ongoing updates and new features based on user fee
 
 * Knowing the number of active users on your WordPress website can help you make informed decisions about your site's content, design, and functionality. By understanding how many users are visiting your site and what they are doing, you can optimize your site to better meet their needs and improve their overall experience. 
 
-= How can I limit the number of active users on my WordPress website? =
+= Can I limit simultaneous login sessions? =
 
-* There are several ways to limit the number of active users on your WordPress website, such as using plugins like WP Limit Login Attempts or Limit Login Attempts Reloaded. These plugins allow you to set limits on the number of login attempts, which can help prevent brute-force attacks and limit the number of active users on your site. 
+* The free plugin does not limit simultaneous logins. The Pro add-on provides configurable session limits and idle logout. Login-attempt protection is a separate function.
 
+= Does the free plugin track visitors who are not logged in? =
 
-== Third-Party Services ==
+The free plugin's online-user count and last-seen features track signed-in WordPress users. They are not a count of all anonymous visitors.
 
-This plugin connects to external services to enrich the "Online Active Users" admin list table with an approximate country, timezone, and country flag for each currently-online user, based on their IP address.
+= Can I display the online-user count using the block editor? =
 
-**IP geolocation (country, timezone, country code)**
-* Service: ipwho.is (by IPWHOIS.io)
-* When: once per unique IP address, cached for 24 hours, whenever a logged-in user's status is recorded.
-* Data sent: the visiting user's IP address, sent as part of the request URL. No other personal data is sent.
-* Terms of Service: https://ipwhois.io/terms
-* Privacy Policy: https://ipwhois.io/privacy
+Yes. Add the Online Active Users block to a post or page. You can also use [webi_active_user] inside a Shortcode block.
 
-**Public IP lookup (local/development environments only)**
-* Service: ipify (https://www.ipify.org)
-* When: only as a fallback, when the site is running on localhost (IP resolves to 127.0.0.1 or ::1), to resolve a public IP for display purposes.
-* Data sent: no parameters are sent; the request has no request body or query data.
+= Why can a logged-in user appear offline? =
 
-**Country flag icons**
-* Service: flagcdn.com
-* When: whenever the "Online Active Users" admin list table is displayed, to load a small flag image per country.
-* Data sent: the resolved two-letter country code, sent as part of the image URL requested by the administrator's browser.
+Online status is based on recently recorded activity, not simply whether a login session exists. A user may appear offline after activity stops, even if they have not logged out.
 
-None of these services are used for advertising, tracking, or analytics; they are used only to display geolocation context to site administrators.
+= How do I enable country and timezone information? =
+
+Open the plugin's Active Users screen and enable location lookup. Country and timezone are estimated from the recorded IP address using an external geolocation service. Availability and accuracy can vary.
+
+= Why are country and timezone unavailable on localhost? =
+
+Local addresses such as 127.0.0.1 and ::1 cannot identify a public geographic location. Location details may also be unavailable for private addresses, VPNs or failed lookups.
+
+= How is WP Online Active Users Pro installed? =
+
+Pro is a paid add-on distributed separately from WordPress.org. Keep the free plugin active, install the Pro ZIP separately and activate your license through License & Plan.
+
+= Does support chat require an AI provider? =
+
+No. Pro supports human conversations through the support inbox without an AI connection. AI-assisted replies require a supported provider account and your own API key.
+
+= What information is sent when AI-assisted replies are used? =
+
+Relevant conversation content is sent to the provider configured by the site owner. The provider's terms and privacy policy apply, and API usage is billed separately by the provider.
+
+= Can I export user activity as CSV or PDF? =
+
+Yes, with Pro. Select users using the available filters, choose report columns and download CSV or a locally generated PDF. Reports contain selected activity details and feature summaries, not a complete backup of chat conversations or feedback history.
+
+= Can I schedule announcements for specific user roles? =
+
+Yes, with Pro. Set a start and end time, choose the eligible roles and configure whether users can dismiss the announcement.
+
 
 == Screenshots ==
 
@@ -231,6 +268,22 @@ None of these services are used for advertising, tracking, or analytics; they ar
 * Added the Online Active Users block to display the active user count in the WordPress block editor.
 * Confirmed compatibility with WordPress 7.1. Upgrade immediately.
 
+= 3.5 =
+* Added country and timezone lookup controls to enable or disable geolocation from the Active Users screen.
+* Show country, timezone and country filters only when location lookup is enabled.
+* Bundled local country flags and improved handling of unavailable location information.
+* Improved geolocation response validation and temporarily cached failed lookups.
+* Added integration with WordPress personal-data export and erasure tools.
+* Improved the user activity table, filtering and online/offline status handling.
+* Updated admin navigation, tab labels and installed edition information.
+* Added a Pro add-on overview with feature, documentation and support links.
+* Added integration points for the separately installed Pro add-on's device details and activity exports.
+* Improved settings layouts, checkbox sizing and upgrade links.
+* Removed unsolicited dashboard review prompts.
+* Updated FAQs and clarified Free and Pro feature availability.
+* Updated external-service and privacy disclosures.
+* Confirmed compatibility with WordPress 7.1.4.
+* Fixed security issues. Updating immediately is recommended.
 
 == Upgrade Notice ==
 
@@ -326,3 +379,20 @@ None of these services are used for advertising, tracking, or analytics; they ar
 = 3.4.5 =
 * Added the Online Active Users block to display the active user count in the WordPress block editor.
 * Confirmed compatibility with WordPress 7.1. Upgrade immediately.
+
+= 3.5 =
+* Added country and timezone lookup controls to enable or disable geolocation from the Active Users screen.
+* Show country, timezone and country filters only when location lookup is enabled.
+* Bundled local country flags and improved handling of unavailable location information.
+* Improved geolocation response validation and temporarily cached failed lookups.
+* Added integration with WordPress personal-data export and erasure tools.
+* Improved the user activity table, filtering and online/offline status handling.
+* Updated admin navigation, tab labels and installed edition information.
+* Added a Pro add-on overview with feature, documentation and support links.
+* Added integration points for the separately installed Pro add-on's device details and activity exports.
+* Improved settings layouts, checkbox sizing and upgrade links.
+* Removed unsolicited dashboard review prompts.
+* Updated FAQs and clarified Free and Pro feature availability.
+* Updated external-service and privacy disclosures.
+* Confirmed compatibility with WordPress 7.1.4.
+* Fixed security issues. Updating immediately is recommended.

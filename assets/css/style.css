@@ -1,6 +1,28 @@
+.users_page_wpoau-active-users h1{
+    font-weight: 600;
+}
 .status.column-status, 
 .manage-column.column-status{
     text-align: center;
+}
+.webi-online-table .wpoau-presence-dot {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background-color: currentColor;
+    vertical-align: middle;
+}
+.webi-online-table .wpoau-presence--online { color: #238636; }
+.webi-online-table .wpoau-presence--offline { color: #d92d20; }
+.webi-online-table .wpoau-presence--inactive,
+.webi-online-table .wpoau-presence--unrecorded { color: #667085; }
+.wpoau-presence--offline,
+.wpoau-presence--online {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
 }
 .online-logged-in {
     color: #4CBB17;
@@ -75,10 +97,20 @@
     margin-right: 6px;
 }
 .table-header-wrap {
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 20px;
+}
+.table-header-wrap form{
+    width: 40%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.table-header-wrap select{
+    width: 100%;
 }
 .top-total-user{
     text-align: right;
@@ -91,3 +123,4 @@
         padding: 8px;
     }
 }
+

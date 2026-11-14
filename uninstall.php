@@ -4,15 +4,12 @@
  *
  * @package Online_Active_Users
  */
-
 // If uninstall is not called from WordPress, exit.
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit();
 }
-
 // Delete plugin transient.
 delete_transient( 'users_status' );
-
 // Delete all custom transients.
 $wpoau_stored_keys = get_option( 'wpoau_transient_keys', array() );
 if ( ! empty( $wpoau_stored_keys ) ) {
@@ -21,6 +18,5 @@ if ( ! empty( $wpoau_stored_keys ) ) {
 	}
 	delete_option( 'wpoau_transient_keys' );
 }
-
-// Optional: Clear cache.
-wp_cache_flush();
+delete_option( 'wpoau_geolocation_consent' );
+delete_transient( 'wpoau_developer_public_ip' );
