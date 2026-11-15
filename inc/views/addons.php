@@ -3,10 +3,10 @@
  * Pro discovery screen. Variables supplied by WPOAU_Addons::render().
  *
  * @package Online_Active_Users
- * @var string $buy_url    Pro purchase URL.
- * @var string $docs_url   Documentation URL.
- * @var string $contact_url Support URL.
- * @var array  $features   Available Pro feature descriptions.
+ * @var string $wpoau_buy_url     Pro purchase URL.
+ * @var string $wpoau_docs_url    Documentation URL.
+ * @var string $wpoau_contact_url Support URL.
+ * @var array  $wpoau_features    Available Pro feature descriptions.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<h2 id="wpoau-addons-title"><?php esc_html_e( 'Know who is here. Make their next visit count.', 'online-active-users' ); ?></h2>
 			<p class="wpoau-addons-lead"><?php esc_html_e( 'Go beyond online status with welcome messages, personal support, user feedback and filtered activity exports.', 'online-active-users' ); ?></p>
 			<div class="wpoau-addons-actions">
-				<a class="wpoau-addons-primary" href="<?php echo esc_url( $buy_url ); ?>"><?php esc_html_e( 'Get the Pro Add-on', 'online-active-users' ); ?><span class="dashicons dashicons-arrow-right-alt" aria-hidden="true"></span></a>
+				<a class="wpoau-addons-primary" href="<?php echo esc_url( $wpoau_buy_url ); ?>"><?php esc_html_e( 'Get the Pro Add-on', 'online-active-users' ); ?><span class="dashicons dashicons-arrow-right-alt" aria-hidden="true"></span></a>
 				<a class="wpoau-addons-secondary" href="#wpoau-pro-features"><?php esc_html_e( 'Explore the features', 'online-active-users' ); ?></a>
 			</div>
 			<p class="wpoau-addons-caption"><?php esc_html_e( 'One Pro add-on. All the features below. Your free plugin stays installed.', 'online-active-users' ); ?></p>
@@ -45,14 +45,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<span class="wpoau-addons-included"><?php esc_html_e( 'Included with Pro', 'online-active-users' ); ?></span>
 		</div>
 		<div class="wpoau-addons-grid">
-			<?php foreach ( $features as $feature ) : ?>
+			<?php foreach ( $wpoau_features as $wpoau_feature ) : ?>
 				<article class="wpoau-addons-card">
-					<span class="wpoau-addons-feature-icon dashicons dashicons-<?php echo esc_attr( $feature['icon'] ); ?>" aria-hidden="true"></span>
-					<h3><?php echo esc_html( $feature['title'] ); ?></h3>
-					<p><?php echo esc_html( $feature['text'] ); ?></p>
+					<span class="wpoau-addons-feature-icon dashicons dashicons-<?php echo esc_attr( $wpoau_feature['icon'] ); ?>" aria-hidden="true"></span>
+					<h3><?php echo esc_html( $wpoau_feature['title'] ); ?></h3>
+					<p><?php echo esc_html( $wpoau_feature['text'] ); ?></p>
 					<ul>
-						<?php foreach ( $feature['points'] as $point ) : ?>
-							<li><span class="dashicons dashicons-yes" aria-hidden="true"></span><?php echo esc_html( $point ); ?></li>
+						<?php foreach ( $wpoau_feature['points'] as $wpoau_point ) : ?>
+							<li><span class="dashicons dashicons-yes" aria-hidden="true"></span><?php echo esc_html( $wpoau_point ); ?></li>
 						<?php endforeach; ?>
 					</ul>
 				</article>
@@ -67,12 +67,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<p><?php esc_html_e( 'Find plugin guidance or contact our team for help with Online Active Users.', 'online-active-users' ); ?></p>
 		</div>
 		<div class="wpoau-addons-resources-links">
-			<a href="<?php echo esc_url( $docs_url ); ?>" target="_blank" rel="noopener noreferrer">
+			<a href="<?php echo esc_url( $wpoau_docs_url ); ?>" target="_blank" rel="noopener noreferrer">
 				<span class="dashicons dashicons-book-alt" aria-hidden="true"></span>
 				<span><strong><?php esc_html_e( 'Documentation', 'online-active-users' ); ?></strong><small><?php esc_html_e( 'Read the plugin guide', 'online-active-users' ); ?></small></span>
 				<span class="dashicons dashicons-arrow-up-right-alt2" aria-hidden="true"></span>
 			</a>
-			<a href="<?php echo esc_url( $contact_url ); ?>" target="_blank" rel="noopener noreferrer">
+			<a href="<?php echo esc_url( $wpoau_contact_url ); ?>" target="_blank" rel="noopener noreferrer">
 				<span class="dashicons dashicons-email-alt" aria-hidden="true"></span>
 				<span><strong><?php esc_html_e( 'Contact support', 'online-active-users' ); ?></strong><small><?php esc_html_e( 'Get help with WP Online Active Users', 'online-active-users' ); ?></small></span>
 				<span class="dashicons dashicons-arrow-up-right-alt2" aria-hidden="true"></span>
@@ -94,7 +94,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<h2 id="wpoau-upgrade-title"><?php esc_html_e( 'Ready to make your website more welcoming?', 'online-active-users' ); ?></h2>
 			<p><?php esc_html_e( 'Bring welcome notifications, support, feedback and exports together in one workspace.', 'online-active-users' ); ?></p>
 		</div>
-		<a class="wpoau-addons-primary" href="<?php echo esc_url( $buy_url ); ?>"><?php esc_html_e( 'Buy Pro Version', 'online-active-users' ); ?><span class="dashicons dashicons-arrow-right-alt" aria-hidden="true"></span></a>
+		<a class="wpoau-addons-primary" href="<?php echo esc_url( $wpoau_buy_url ); ?>"><?php esc_html_e( 'Buy Pro Version', 'online-active-users' ); ?><span class="dashicons dashicons-arrow-right-alt" aria-hidden="true"></span></a>
 	</section>
 	<p class="wpoau-addons-existing">
 		<?php esc_html_e( 'Already purchased? Install your Pro download, then activate your key in', 'online-active-users' ); ?>

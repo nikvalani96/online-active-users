@@ -168,9 +168,9 @@ if ( ! class_exists( 'Webi_Active_User' ) ) {
 
 			echo '<div class="wrap"><h1>' . esc_html__( 'Online Users Lists', 'online-active-users' ) . '</h1>';
 			require_once WPOAU_PLUGIN_DIR . '/inc/class-wpoau-user-directory.php';
-			$directory = new WPOAU_User_Directory();
-			$users = $directory->records();
-			$online_user_count = absint( $this->wpoau_online_users( 'count' ) );
+			$wpoau_directory           = new WPOAU_User_Directory();
+			$wpoau_user_records        = $wpoau_directory->records();
+			$wpoau_online_user_count   = absint( $this->wpoau_online_users( 'count' ) );
 			require_once WPOAU_PLUGIN_DIR . '/inc/user-list-table.php';
 		}
 

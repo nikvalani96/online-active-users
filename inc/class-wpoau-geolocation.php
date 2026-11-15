@@ -34,9 +34,9 @@ final class WPOAU_Geolocation {
 		if ( ! current_user_can( 'manage_options' ) || ! current_user_can( 'list_users' ) ) {
 			return;
 		}
-		$enabled = WPOAU_Privacy::geolocation_enabled();
-		$managed = defined( 'WPOAU_GEOLOCATION_ENABLED' );
-		$error   = get_transient( 'wpoau_geo_lookup_error' );
+		$wpoau_enabled = WPOAU_Privacy::geolocation_enabled();
+		$wpoau_managed = defined( 'WPOAU_GEOLOCATION_ENABLED' );
+		$wpoau_error   = get_transient( 'wpoau_geo_lookup_error' );
 		require __DIR__ . '/views/geolocation-settings.php';
 	}
 

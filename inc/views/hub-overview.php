@@ -19,8 +19,8 @@ if ( ! in_array( $wpoau_tab, array( 'overview', 'automation', 'appearance', 'ass
 if ( 'addons' === $wpoau_tab && WPOAU_Addons::pro_loaded() ) {
 	$wpoau_tab = 'overview';
 }
-$pro   = WPOAU_Hub::premium();
-$badge = $pro && defined( 'WPOAU\Pro\VERSION' ) ? 'Pro v' . constant( 'WPOAU\Pro\VERSION' ) : 'Free v' . WPOAU_VERSION;
+$wpoau_pro   = WPOAU_Hub::premium();
+$wpoau_badge = $wpoau_pro && defined( 'WPOAU\Pro\VERSION' ) ? 'Pro v' . constant( 'WPOAU\Pro\VERSION' ) : 'Free v' . WPOAU_VERSION;
 ?>
 
 <div class="wpoau-header">
@@ -29,7 +29,7 @@ $badge = $pro && defined( 'WPOAU\Pro\VERSION' ) ? 'Pro v' . constant( 'WPOAU\Pro
 		<h1>Online Active Users</h1>
 		<p>Understand who is here. Bring your users back.</p>
 	</div>
-	<span class="wpoau-badge"><?php echo esc_html( $badge ); ?></span>
+	<span class="wpoau-badge"><?php echo esc_html( $wpoau_badge ); ?></span>
 </div>
 <nav class="wpoau-nav" aria-label="Plugin navigation">
 
@@ -46,26 +46,26 @@ foreach ( array(
 	'live_viewers'  => 'Live Page Viewers',
 	'addons'        => __( 'Add-ons', 'online-active-users' ),
 	'license'       => 'License & Plan',
-) as $key => $label ) {
-	if ( 'addons' === $key && WPOAU_Addons::pro_loaded() ) {
+) as $wpoau_key => $wpoau_label ) {
+	if ( 'addons' === $wpoau_key && WPOAU_Addons::pro_loaded() ) {
 		continue;
 	}
-	if ( ! class_exists( 'WPOAU\Pro\License' ) && in_array( $key, array( 'automation', 'appearance', 'assistance', 'feedback', 'export', 'sessions', 'announcements', 'live_viewers' ), true ) ) {
+	if ( ! class_exists( 'WPOAU\Pro\License' ) && in_array( $wpoau_key, array( 'automation', 'appearance', 'assistance', 'feedback', 'export', 'sessions', 'announcements', 'live_viewers' ), true ) ) {
 		continue;
 	}
-	if ( 'overview' !== $key && ! current_user_can( 'manage_options' ) ) {
+	if ( 'overview' !== $wpoau_key && ! current_user_can( 'manage_options' ) ) {
 		continue;
 	}
-	$tab_url = add_query_arg(
+	$wpoau_tab_url = add_query_arg(
 		array(
 			'page' => 'wpoau-active-users',
-			'tab'  => $key,
+			'tab'  => $wpoau_key,
 		),
 		admin_url( 'users.php' )
 	);
 	?>
-	<a class="<?php echo 'addons' === $key ? 'wpoau-addons-tab' : ''; ?>" <?php echo ( $wpoau_tab === $key ? 'aria-current="page"' : '' ); ?> href="<?php echo esc_url( $tab_url ); ?>"><?php echo esc_html( $label ); ?><?php echo ( in_array( $key, array( 'automation', 'appearance', 'assistance', 'feedback', 'export', 'sessions', 'announcements' ), true ) && ! $pro ? ' <span class="wpoau-tag">Locked</span>' : '' ); ?>
-		<?php if ( 'addons' === $key ) : ?>
+	<a class="<?php echo 'addons' === $wpoau_key ? 'wpoau-addons-tab' : ''; ?>" <?php echo ( $wpoau_tab === $wpoau_key ? 'aria-current="page"' : '' ); ?> href="<?php echo esc_url( $wpoau_tab_url ); ?>"><?php echo esc_html( $wpoau_label ); ?><?php echo ( in_array( $wpoau_key, array( 'automation', 'appearance', 'assistance', 'feedback', 'export', 'sessions', 'announcements' ), true ) && ! $wpoau_pro ? ' <span class="wpoau-tag">Locked</span>' : '' ); ?>
+		<?php if ( 'addons' === $wpoau_key ) : ?>
 			<span class="wpoau-addons-tab-badge">PRO</span>
 		<?php endif; ?>
 	</a>
@@ -73,15 +73,15 @@ foreach ( array(
 </nav>
 
 <?php
-$resource_tabs  = array( 'sessions', 'automation', 'appearance', 'assistance', 'feedback', 'export', 'announcements', 'live_viewers', 'license' );
-$show_resources = WPOAU_Addons::pro_loaded() && in_array( $wpoau_tab, $resource_tabs, true );
+$wpoau_resource_tabs  = array( 'sessions', 'automation', 'appearance', 'assistance', 'feedback', 'export', 'announcements', 'live_viewers', 'license' );
+$wpoau_show_resources = WPOAU_Addons::pro_loaded() && in_array( $wpoau_tab, $wpoau_resource_tabs, true );
 if ( 'overview' === $wpoau_tab ) {
 	?>
-<div class="wpoau-tab-layout<?php echo $show_resources ? ' has-resources' : ''; ?>">
+<div class="wpoau-tab-layout<?php echo $wpoau_show_resources ? ' has-resources' : ''; ?>">
 	<main class="wpoau-tab-content">
 		<?php do_action( 'wpoau_hub_overview_settings' ); ?>
 	</main>
-	<?php if ( $show_resources ) : ?>
+	<?php if ( $wpoau_show_resources ) : ?>
 		<?php include __DIR__ . '/admin-resources.php'; ?>
 	<?php endif; ?>
 </div>
@@ -92,7 +92,7 @@ if ( ! current_user_can( 'manage_options' ) ) {
 	wp_die( 'Access denied.' );
 }
 ?>
-<div class="wpoau-tab-layout<?php echo $show_resources ? ' has-resources' : ''; ?>">
+<div class="wpoau-tab-layout<?php echo $wpoau_show_resources ? ' has-resources' : ''; ?>">
 	<main class="wpoau-tab-content">
 <?php
 if ( has_action( 'wpoau_hub_' . $wpoau_tab ) ) {
@@ -116,7 +116,7 @@ if ( has_action( 'wpoau_hub_' . $wpoau_tab ) ) {
 }
 ?>
 	</main>
-	<?php if ( $show_resources ) : ?>
+	<?php if ( $wpoau_show_resources ) : ?>
 		<?php include __DIR__ . '/admin-resources.php'; ?>
 	<?php endif; ?>
 </div>

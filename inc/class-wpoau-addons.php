@@ -94,10 +94,10 @@ final class WPOAU_Addons {
 		if ( self::pro_loaded() || ! current_user_can( 'manage_options' ) || ! current_user_can( 'list_users' ) ) {
 			return;
 		}
-		$features    = self::features();
-		$buy_url     = WPOAU_Hub::buy_url();
-		$docs_url    = WPOAU_Hub::docs_url();
-		$contact_url = WPOAU_Hub::contact_url();
+		$wpoau_features    = self::features();
+		$wpoau_buy_url     = WPOAU_Hub::buy_url();
+		$wpoau_docs_url    = WPOAU_Hub::docs_url();
+		$wpoau_contact_url = WPOAU_Hub::contact_url();
 		require __DIR__ . '/views/addons.php';
 	}
 }
