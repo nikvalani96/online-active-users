@@ -29,7 +29,9 @@ $wpoau_badge = $wpoau_pro && defined( 'WPOAU\Pro\VERSION' ) ? 'Pro v' . constant
 		<h1>Online Active Users</h1>
 		<p>Understand who is here. Bring your users back.</p>
 	</div>
-	<span class="wpoau-badge"><?php echo esc_html( $wpoau_badge ); ?></span>
+	<div class="wpoau-header-actions">
+		<span class="wpoau-badge"><?php echo esc_html( $wpoau_badge ); ?></span>
+	</div>
 </div>
 <nav class="wpoau-nav" aria-label="Plugin navigation">
 

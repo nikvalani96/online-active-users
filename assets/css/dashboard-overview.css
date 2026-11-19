@@ -1,0 +1,415 @@
+.wpoau-dashboard-overview {
+	--wpoau-navy: #14213d;
+	--wpoau-muted: #64748b;
+	--wpoau-pink: #ed1658;
+	color: var(--wpoau-navy);
+	font-size: 14px;
+}
+
+.wpoau-dashboard-overview * {
+	box-sizing: border-box;
+}
+
+#webizito_active_users .hndle::before {
+	display: inline-block;
+	width: 22px;
+	height: 22px;
+	margin-inline-end: 9px;
+	line-height: 1;
+	vertical-align: middle;
+	content: "";
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23111827' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='9' cy='8' r='3'/%3E%3Cpath d='M3.5 20v-1a5.5 5.5 0 0 1 11 0v1'/%3E%3Ccircle cx='18' cy='8' r='2.5'/%3E%3Cpath d='M17 14.5a4.5 4.5 0 0 1 3.5 4.4V20'/%3E%3C/svg%3E");
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: contain;
+}
+
+#webizito_active_users .postbox-header > .hndle {
+	justify-content: flex-start;
+}
+
+.wpoau-dashboard-stats {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 8px;
+}
+
+.wpoau-dashboard-stat {
+	display: flex;
+	min-width: 0;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 7px;
+	min-height: 76px;
+	padding: 10px;
+	border: 1px solid #e2e8f0;
+	border-radius: 6px;
+	background: #fff;
+	text-align: center;
+}
+.wpoau-dashboard-stat--online{
+	background: #EDF8F2;
+}
+.wpoau-dashboard-stat--offline{
+	background: #F1F5F9;
+}
+.wpoau-dashboard-stat--inactive{
+	background: #FFF0F5;
+}
+.wpoau-dashboard-stat-label {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 1.3;
+}
+
+.wpoau-dashboard-stat--online .wpoau-dashboard-stat-label{
+	color: #246344;
+}
+.wpoau-dashboard-stat--offline .wpoau-dashboard-stat-label{
+	color: #475569;
+}
+.wpoau-dashboard-stat--inactive .wpoau-dashboard-stat-label{
+	color: #9D174D;
+}
+
+.wpoau-dashboard-stat-dot {
+	width: 8px;
+	height: 8px;
+	flex: 0 0 8px;
+	border-radius: 50%;
+	background: #64748b;
+}
+
+.wpoau-dashboard-stat--online .wpoau-dashboard-stat-dot {
+	background: #16803c;
+}
+
+.wpoau-dashboard-stat--inactive .wpoau-dashboard-stat-dot {
+	background: var(--wpoau-pink);
+}
+
+.wpoau-dashboard-stat strong {
+	color: #64748B;
+	font-size: 25px;
+	line-height: 1;
+}
+
+.wpoau-dashboard-stat--online strong {
+	color: #15803d;
+}
+
+.wpoau-dashboard-stat--inactive strong {
+	color: #ED1658;
+}
+
+.wpoau-dashboard-explainer {
+	margin: 8px 0 2px;
+	color: var(--wpoau-muted);
+	font-size: 12px;
+}
+
+.wpoau-dashboard-updated {
+	margin: 0 0 16px;
+	color: var(--wpoau-muted);
+	font-size: 11px;
+}
+
+.wpoau-dashboard-recent h3,
+.wpoau-dashboard-attention h3,
+.wpoau-dashboard-feed h3 {
+	margin: 0 0 8px;
+	color: var(--wpoau-navy);
+	font-size: 15px;
+}
+
+.wpoau-dashboard-recent ul,
+.wpoau-dashboard-feed-list,
+.wpoau-dashboard-attention ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.wpoau-dashboard-user {
+	display: flex;
+	align-items: center;
+	gap: 9px;
+	min-width: 0;
+	padding: 8px 0;
+	border-top: 1px solid #edf0f4;
+}
+
+.wpoau-dashboard-avatar,
+.wpoau-dashboard-avatar img {
+	display: block;
+	width: 36px;
+	height: 36px;
+	flex: 0 0 36px;
+	border-radius: 50%;
+}
+
+.wpoau-dashboard-user-meta {
+	display: flex;
+	min-width: 0;
+	flex-direction: column;
+	gap: 2px;
+}
+
+.wpoau-dashboard-user-meta strong {
+	overflow: hidden;
+	color: var(--wpoau-navy);
+	font-size: 14px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.wpoau-dashboard-presence {
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	color: #475569;
+	font-size: 12px;
+}
+
+.wpoau-dashboard-presence > span {
+	width: 7px;
+	height: 7px;
+	border-radius: 50%;
+	background: #64748b;
+}
+
+.wpoau-dashboard-presence--online > span {
+	background: #16803c;
+}
+
+.wpoau-dashboard-presence--inactive > span {
+	background: var(--wpoau-pink);
+}
+
+.wpoau-dashboard-user-meta small,
+.wpoau-dashboard-empty {
+	color: var(--wpoau-muted);
+	font-size: 12px;
+}
+
+.wpoau-dashboard-empty {
+	margin: 0;
+	padding: 10px 0;
+}
+
+.wpoau-dashboard-footer {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	margin-top: 12px;
+	padding-top: 10px;
+	border-top: 1px solid #e2e8f0;
+}
+
+.wpoau-dashboard-footer a{
+	color: #b10f44;
+	font-weight: 600;
+	text-decoration: none;
+}
+.wpoau-dashboard-shortcuts a{
+	color: #3858e9;
+	font-size:13px;
+	text-decoration: none;
+	font-weight: 600;
+}
+.wpoau-dashboard-shortcuts a:last-child{
+	background: #FFF0F5;
+    color: #9d174d;
+    padding: 5px 10px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .02em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    width: 24%;
+}
+.wpoau-dashboard-shortcuts a:last-child span{
+	margin-left: 4px;
+}
+.wpoau-dashboard-shortcuts a:hover{
+	text-decoration: none !important;
+}
+.wpoau-dashboard-overview a:hover {
+	color: var(--wpoau-pink);
+	text-decoration: underline;
+}
+
+.wpoau-dashboard-overview a:focus-visible {
+	border-radius: 2px;
+	outline: 2px solid var(--wpoau-pink);
+	outline-offset: 2px;
+}
+
+.wpoau-dashboard-shortcuts {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px 0;
+	margin-top: 12px;
+	padding-top: 9px;
+	border-top: 1px solid #e2e8f0;
+	font-size: 12px;
+	align-items: center;
+}
+
+.wpoau-dashboard-shortcuts a {
+	padding: 0 10px;
+	border-inline-start: 1px solid #e2e8f0;
+}
+
+.wpoau-dashboard-shortcuts a:first-child {
+	padding-inline-start: 0;
+	border-inline-start: 0;
+}
+
+.wpoau-dashboard-shortcuts a:last-child {
+	padding-inline-end: 0;
+}
+
+.wpoau-dashboard-attention,
+.wpoau-dashboard-feed {
+	margin-top: 14px;
+	padding-top: 12px;
+	border-top: 1px solid #e2e8f0;
+}
+
+.wpoau-dashboard-attention li {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px;
+	padding: 7px 0;
+	border-top: 1px solid #edf0f4;
+}
+
+.wpoau-dashboard-attention li:first-child,
+.wpoau-dashboard-feed-item:first-child {
+	border-top: 0;
+}
+
+.wpoau-dashboard-attention li > a {
+	color: var(--wpoau-navy);
+	text-decoration: none;
+}
+
+.wpoau-dashboard-count {
+	flex: 0 0 auto;
+	color: var(--wpoau-muted);
+	font-size: 12px;
+	font-weight: 600;
+}
+
+.wpoau-dashboard-count--positive {
+	color: var(--wpoau-pink);
+}
+
+.wpoau-dashboard-feed-item {
+	padding: 8px 0;
+	border-top: 1px solid #edf0f4;
+}
+
+.wpoau-dashboard-feed-item > a {
+	color: #3858e9;
+	display: block;
+	margin: 2px 0;
+	font-weight: 600;
+}
+
+.wpoau-dashboard-feed-meta {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+    align-items: center;
+	gap: 5px 8px;
+	color: var(--wpoau-muted);
+	font-size: 11px;
+	margin-bottom: 5px;
+}
+
+.wpoau-dashboard-feed-meta span:first-child {
+	background: #FFF0F5;
+	color: #9d174d;
+	padding: 2px 6px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+}
+
+.wpoau-dashboard-feed-description {
+	display: -webkit-box;
+	overflow: hidden;
+	margin: 3px 0 0;
+	color: #50575e;
+	font-size: 12px;
+	line-height: 1.4;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+}
+
+.wpoau-dashboard-feed-footer {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px 16px;
+	margin-top: 8px;
+	font-size: 12px;
+}
+
+.wpoau-dashboard-overview #wpoau-recent-session-count {
+	color: var(--wpoau-navy);
+	font-weight: 600;
+}
+
+.wpoau-dashboard-overview > .wpoau-dashboard-session-summary {
+	margin: 12px 0 0;
+	padding-top: 9px;
+	border-top: 1px solid #e2e8f0;
+	color: var(--wpoau-muted);
+	font-size: 12px;
+}
+
+@media screen and (max-width: 782px) {
+	.wpoau-dashboard-stat {
+		min-height: 72px;
+		padding: 8px 6px;
+	}
+
+	.wpoau-dashboard-stat strong {
+		font-size: 23px;
+	}
+}
+
+@media screen and (max-width: 420px) {
+	.wpoau-dashboard-stats {
+		gap: 5px;
+	}
+
+	.wpoau-dashboard-stat {
+		padding: 7px 6px;
+	}
+
+	.wpoau-dashboard-stat-label {
+		gap: 4px;
+		font-size: 11px;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.wpoau-dashboard-overview *,
+	.wpoau-dashboard-overview *::before,
+	.wpoau-dashboard-overview *::after {
+		scroll-behavior: auto !important;
+		transition-duration: 0.01ms !important;
+	}
+}

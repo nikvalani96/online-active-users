@@ -14,12 +14,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class WPOAU_Hub {
 
 	/**
+	 * Get the verified WP Online Active Users product page.
+	 *
+	 * @return string
+	 */
+	public static function product_url(): string {
+		return 'https://webizito.com/online-active-users/';
+	}
+
+	/**
 	 * Get the Pro purchase URL.
 	 *
 	 * @return string
 	 */
 	public static function buy_url(): string {
-		return esc_url_raw( apply_filters( 'wpoau_pro_buy_url', 'https://webizito.com/pro-account/' ) );
+		return esc_url_raw( apply_filters( 'wpoau_pro_buy_url', self::product_url() ) );
 	}
 
 	/**
@@ -50,6 +59,15 @@ final class WPOAU_Hub {
 	}
 
 	/**
+	 * Return the offer card for the current admin, or null when none should show.
+	 *
+	 * @return array|null
+	 */
+	public static function promo_link(): ?array {
+		return WPOAU_Promo::card();
+	}
+
+	/**
 	 * Render the shared admin overview.
 	 *
 	 * @return bool
@@ -61,10 +79,7 @@ final class WPOAU_Hub {
 add_action(
 	'admin_enqueue_scripts',
 	static function () {
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only admin page routing.
-		$page = isset( $_GET['page'] ) && is_string( $_GET['page'] ) ? sanitize_key( wp_unslash( $_GET['page'] ) ) : '';
-		if ( 'wpoau-active-users' === $page ) {
-			wp_enqueue_style( 'wpoau-admin-hub', plugin_dir_url( WPOAU_PLUGIN_FILE ) . 'assets/css/admin-hub.css', array(), WPOAU_VERSION );
-		}
+		wp_enqueue_style( 'wpoau-admin-hub', plugin_dir_url( WPOAU_PLUGIN_FILE ) . 'assets/css/admin-hub.css', array(), WPOAU_VERSION );
+		wp_enqueue_style( 'wpoau-plugin-list', plugin_dir_url( WPOAU_PLUGIN_FILE ) . 'assets/css/plugin-list.css', array(), WPOAU_VERSION );
 	}
 );

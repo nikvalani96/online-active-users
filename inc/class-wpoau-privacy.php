@@ -52,7 +52,7 @@ final class WPOAU_Privacy {
 	 */
 	public function register(): void {
 		if ( function_exists( 'wp_add_privacy_policy_content' ) ) {
-			wp_add_privacy_policy_content( 'Online Active Users', '<p>This site records the last activity time of signed-in users. If the site administrator enables geolocation, IP addresses are sent to ipwho.is to estimate country and timezone and cached for 24 hours. Pro support conversations and feedback are stored on this site when those features are enabled. Optional notification emails are sent using the site mail provider. Contact the site administrator about access and erasure.</p>' );
+			wp_add_privacy_policy_content( 'Online Active Users', '<p>This site records the last activity time of signed-in users. If the site administrator enables geolocation, IP addresses are sent to ipwho.is to estimate country and timezone and cached for 24 hours. The plugin periodically requests public product-update and promo-banner data from webizito.com. The requesting server IP address is visible to webizito.com; these requests do not include this site URL, user information, email addresses, license keys or tracking identifiers. Pro support conversations and feedback are stored on this site when those features are enabled. Optional notification emails are sent using the site mail provider. Contact the site administrator about access and erasure.</p>' );
 		}
 	}
 

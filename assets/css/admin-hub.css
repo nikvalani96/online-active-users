@@ -39,6 +39,285 @@ body.users_page_wpoau-active-users #wpbody-content {
     font-weight: 600;
     white-space: nowrap;
 }
+.wpoau-header-actions {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    min-width: 0;
+}
+.wpoau-campaign {
+    --campaign-accent: #ff4f87;
+    --campaign-accent-soft: #ffd2df;
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 28px;
+    box-sizing: border-box;
+    width: auto;
+    min-width: 0;
+    margin: 18px 20px 18px 0;
+    padding: 24px 58px 24px 28px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, .16);
+    border-radius: 16px;
+    background-color: #171a2d;
+    background:
+        radial-gradient(circle at 8% 140%, color-mix(in srgb, var(--campaign-accent) 58%, transparent), transparent 36%),
+        linear-gradient(110deg, #151827 0%, #20233a 58%, #111524 100%);
+    box-shadow: 0 16px 40px rgba(20, 24, 45, .18);
+    color: #fff;
+}
+.wpoau-campaign::before,
+.wpoau-campaign::after {
+    position: absolute;
+    z-index: -1;
+    border: 1px solid rgba(255, 255, 255, .1);
+    border-radius: 50%;
+    content: "";
+}
+.wpoau-campaign::before {
+    width: 190px;
+    height: 190px;
+    inset-block-start: -115px;
+    inset-inline-end: 18%;
+}
+.wpoau-campaign::after {
+    width: 90px;
+    height: 90px;
+    inset-block-end: -55px;
+    inset-inline-start: 38%;
+}
+.wpoau-campaign--cyber-monday {
+    --campaign-accent: #8b5cf6;
+    --campaign-accent-soft: #ddd2ff;
+}
+.wpoau-campaign--christmas {
+    --campaign-accent: #34d399;
+    --campaign-accent-soft: #c9f7e5;
+    background:
+        radial-gradient(circle at 5% 140%, rgba(239, 68, 68, .34), transparent 34%),
+        linear-gradient(110deg, #12372f, #172c35 58%, #301b27);
+}
+.wpoau-campaign--new-year {
+    --campaign-accent: #f5c451;
+    --campaign-accent-soft: #fff0ba;
+    background:
+        radial-gradient(circle at 82% -50%, rgba(245, 196, 81, .34), transparent 35%),
+        linear-gradient(110deg, #17172a, #24203b 58%, #171a2c);
+}
+.wpoau-campaign--custom {
+    --campaign-accent: #fb5687;
+    --campaign-accent-soft: #ffd3e0;
+}
+.wpoau-campaign__content {
+    display: flex;
+    align-items: center;
+    flex: 1 1 420px;
+    gap: 16px;
+    min-width: 0;
+}
+.wpoau-campaign__theme-icon {
+    display: inline-flex;
+    flex: 0 0 50px;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border: 1px solid rgba(255, 255, 255, .2);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, .1);
+    color: var(--campaign-accent-soft);
+    box-shadow: inset 0 1px rgba(255, 255, 255, .12);
+}
+.wpoau-campaign__message {
+    min-width: 0;
+    text-align: left;
+}
+.wpoau-campaign__eyebrow {
+    display: inline-flex;
+    margin-bottom: 8px;
+    color: var(--campaign-accent-soft);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+}
+.wpoau-campaign__message h2 {
+    margin: 0;
+    color: #fff;
+    font-size: clamp(22px, 2vw, 30px);
+    font-weight: 750;
+    letter-spacing: -.35px;
+    line-height: 1.15;
+}
+.wpoau-campaign__message p {
+    max-width: 720px;
+    margin: 8px 0 0;
+    color: #d9deef;
+    font-size: 14px;
+    line-height: 1.5;
+}
+.wpoau-campaign__actions {
+    display: flex;
+    flex: 0 1 auto;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    min-width: 0;
+}
+.wpoau-campaign__coupon {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 7px 7px 7px 12px;
+    border: 1px dashed rgba(255, 255, 255, .32);
+    border-radius: 11px;
+    background: rgba(0, 0, 0, .2);
+}
+.wpoau-campaign__coupon > span {
+    color: #cbd2e4;
+    font-size: 11px;
+}
+.wpoau-campaign__coupon code {
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .7px;
+    background: transparent;
+}
+.wpoau-campaign__copy-button {
+    min-width: 58px;
+    padding: 7px 10px;
+    border: 0;
+    border-radius: 7px;
+    background: rgba(255, 255, 255, .13);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+}
+.wpoau-campaign__copy-button:hover,
+.wpoau-campaign__copy-button.is-copied {
+    background: var(--campaign-accent);
+}
+.wpoau-campaign__cta {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 18px;
+    border-radius: 10px;
+    background: var(--campaign-accent);
+    box-shadow: 0 8px 22px color-mix(in srgb, var(--campaign-accent) 32%, transparent);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform .16s ease, filter .16s ease;
+}
+.wpoau-campaign__cta:hover {
+    color: #fff;
+    filter: brightness(1.08);
+    transform: translateY(-1px);
+}
+.wpoau-campaign__cta:focus-visible,
+.wpoau-campaign__copy-button:focus-visible,
+.wpoau-campaign__dismiss button:focus-visible {
+    outline: 3px solid var(--campaign-accent-soft);
+    outline-offset: 3px;
+}
+.wpoau-campaign__dismiss {
+    position: absolute;
+    inset-block-start: 10px;
+    inset-inline-end: 10px;
+    margin: 0;
+}
+.wpoau-campaign__dismiss button {
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: 0;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, .08);
+    color: #d9deef;
+    font-size: 21px;
+    line-height: 1;
+    cursor: pointer;
+}
+.wpoau-campaign__dismiss button:hover {
+    background: rgba(255, 255, 255, .16);
+    color: #fff;
+}
+@media (max-width: 1180px) {
+    .wpoau-campaign {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+    .wpoau-campaign__content {
+        flex: none;
+        width: 100%;
+    }
+    .wpoau-campaign__actions {
+        justify-content: center;
+        flex-wrap: wrap;
+        width: 100%;
+    }
+}
+@media (max-width: 782px) {
+    .users_page_wpoau-active-users .wpoau-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .wpoau-header-actions {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+    }
+    .wpoau-campaign {
+        margin: 12px 10px 14px 0;
+        padding: 22px 44px 22px 20px;
+        border-radius: 13px;
+    }
+    .wpoau-campaign__actions {
+        align-items: stretch;
+        gap: 10px;
+    }
+    .wpoau-campaign__coupon {
+        flex: 1 1 220px;
+    }
+    .wpoau-campaign__cta {
+        flex: 1 1 180px;
+    }
+}
+@media (max-width: 520px) {
+    .wpoau-campaign {
+        gap: 20px;
+        padding-inline-end: 36px;
+    }
+    .wpoau-campaign__message h2 {
+        font-size: 23px;
+    }
+    .wpoau-campaign__theme-icon {
+        flex-basis: 44px;
+        width: 44px;
+        height: 44px;
+    }
+    .wpoau-campaign__coupon {
+        display: grid;
+        grid-template-columns: 1fr auto;
+    }
+    .wpoau-campaign__coupon > span {
+        grid-column: 1 / -1;
+    }
+    .wpoau-campaign__cta {
+        width: 100%;
+    }
+}
 .users_page_wpoau-active-users .wpoau-nav {
     display: flex;
     gap: 8px;
@@ -281,6 +560,10 @@ body.users_page_wpoau-active-users #wpbody-content {
         align-items: flex-start !important;
         flex-direction: column;
     }
+    .wpoau-header-actions {
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
     .wpoau-summary {
         grid-template-columns: 1fr;
     }
@@ -301,7 +584,7 @@ body.users_page_wpoau-active-users #wpbody-content {
     line-height: 26px;
 }
 
-/* Free-edition add-on discovery badge. */
+/* Free-edition add-on badge. */
 .users_page_wpoau-active-users .wpoau-nav { flex-wrap: wrap; }
 .users_page_wpoau-active-users .wpoau-nav .wpoau-addons-tab { position: relative; padding-inline-end: 54px; }
 .wpoau-addons-tab .wpoau-addons-tab-badge { position: absolute; inset-inline-end: 8px; top: 7px; padding: 2px 6px; border-radius: 5px; background: #e61f57; color: #fff; font-size: 9px; font-weight: 700; line-height: 1.5; letter-spacing: .4px; }

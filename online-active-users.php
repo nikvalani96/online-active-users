@@ -6,7 +6,7 @@
  * Plugin URI: https://wordpress.org/plugins/online-active-users/
  * Description: Monitor and display real-time online users and last seen status on your WordPress site with Online Active Users plugin.
  * Tags: online users, active users, user tracking, user status, user activity
- * Version: 3.5.1
+ * Version: 3.5.2
  * Requires at least: 6.3
  * Requires PHP: 8.0
  * Author: Webizito
@@ -30,16 +30,21 @@ if ( ! defined( 'WPOAU_PLUGIN_FILE' ) ) {
 	define( 'WPOAU_PLUGIN_FILE', __FILE__ );
 }
 if ( ! defined( 'WPOAU_VERSION' ) ) {
-	define( 'WPOAU_VERSION', '3.5.1' );
+	define( 'WPOAU_VERSION', '3.5.2' );
 }
+
 // class-wpoau-active-users.php replaces the old inc/webi-functions.php (removed): both defined the
 // same Wpoau_Active_Users class, and this one has the escaping/i18n/WPCS fixes applied.
 require_once WPOAU_PLUGIN_DIR . '/inc/class-wpoau-active-users.php';
 require_once WPOAU_PLUGIN_DIR . '/class-webi-custom-widget.php';
 require_once WPOAU_PLUGIN_DIR . '/inc/class-wpoau-hub.php';
+require_once WPOAU_PLUGIN_DIR . '/inc/class-wpoau-offer-feed.php';
+require_once WPOAU_PLUGIN_DIR . '/inc/class-wpoau-promo.php';
 require_once WPOAU_PLUGIN_DIR . '/inc/class-wpoau-addons.php';
 require_once WPOAU_PLUGIN_DIR . '/inc/class-wpoau-privacy.php';
 require_once WPOAU_PLUGIN_DIR . '/inc/class-wpoau-geolocation.php';
+require_once WPOAU_PLUGIN_DIR . '/inc/class-wpoau-dashboard-updates.php';
+
 if ( ! class_exists( 'Webi_Active_User' ) ) {
 	/**
 	 * Main plugin bootstrap: wires up hooks for tracking and displaying online users.
@@ -73,8 +78,6 @@ if ( ! class_exists( 'Webi_Active_User' ) ) {
 			add_filter( 'plugin_row_meta', array( $this, 'wpoau_support_and_faq_links' ), 10, 4 );
 			add_action( 'admin_menu', array( $this, 'wpoau_add_admin_submenu' ) );
 			add_filter( 'plugin_action_links_' . plugin_basename( WPOAU_PLUGIN_FILE ), array( $this, 'wpoau_plugin_by_link' ), 10, 1 );
-			add_action( 'admin_notices', array( $this, 'wpoau_display_notice' ) );
-			register_deactivation_hook( WPOAU_PLUGIN_FILE, array( $this, 'wpoau_display_notice' ) );
 			register_deactivation_hook( WPOAU_PLUGIN_FILE, array( $this, 'wpoau_delete_transient' ) );
 			$this->wpoau->wpoau_active_user_shortcode();
 		}
@@ -219,40 +222,26 @@ if ( ! class_exists( 'Webi_Active_User' ) ) {
 		}
 
 		/**
-		 * Add "Donate" and "By Webizito" links to the plugin's action links.
+		 * Add settings, documentation and Free-edition upgrade links.
 		 *
 		 * @param array $links Existing plugin action links.
 		 * @return array
 		 */
 
 		public function wpoau_plugin_by_link( $links ) {
-			$links[] = '<a href="' . esc_url( admin_url( 'users.php?page=wpoau-active-users' ) ) . '"><span>' . esc_html__( ' Settings', 'online-active-users' ) . '</span></a>';
-			$links[] = '<a href="' . esc_url( WPOAU_Hub::docs_url() ) . '" target="_blank" rel="noopener noreferrer"><span>' . esc_html__( ' Docs', 'online-active-users' ) . '</span></a>';
-			$links[] = '<a href="' . esc_url( 'https://wordpress.org/support/plugin/online-active-users/' ) . '" target="_blank"><span>' . esc_html__( ' Support', 'online-active-users' ) . '</span></a>';
+			$links[] = '<a href="' . esc_url( admin_url( 'users.php?page=wpoau-active-users' ) ) . '">' . esc_html__( 'Settings', 'online-active-users' ) . '</a>';
+			$links[] = '<a href="' . esc_url( WPOAU_Hub::docs_url() ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Docs', 'online-active-users' ) . '</a>';
+			$links[] = '<a href="' . esc_url( 'https://wordpress.org/support/plugin/online-active-users/' ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Support', 'online-active-users' ) . '</a>';
+
+			$upgrade = WPOAU_Promo::plugin_offer();
+			$cta_links = array();
+			if ( ! WPOAU_Addons::pro_loaded() ) {
+				$cta_links[] = '<a class="wpoau-plugin-upgrade" href="' . esc_url( WPOAU_Hub::buy_url() ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Upgrade to Pro', 'online-active-users' ) . '</a>';
+			}
+			$cta_links[] = '<a class="wpoau-plugin-offer" href="' . esc_url( $upgrade['url'] ) . '" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">✦</span> ' . esc_html( $upgrade['label'] ) . '</a>';
+			$links[] = '<span class="wpoau-plugin-cta-group">' . implode( '', $cta_links ) . '</span>';
 			return $links;
 		}
-
-		/**
-		 * Display a review/donation admin notice.
-		 */
-		
-		public function wpoau_display_notice() {
-		    if ( ! current_user_can( 'manage_options' ) ) {
-		        return;
-		    }
-
-		    $message = sprintf(
-		        /* translators: 1: opening review link tag, 2: closing link tag. */
-		        esc_html__( 'Enjoying our WP Online Active Users plugin? Please consider leaving us a review %1$shere%2$s.', 'online-active-users' ),
-		        '<a href="' . esc_url( 'https://wordpress.org/support/plugin/online-active-users/reviews/?rate=5#new-post' ) . '" target="_blank" rel="noopener noreferrer">',
-		        '</a>'
-		    );
-
-		    echo '<div class="notice notice-success is-dismissible wp-online-active-users-notice" id="wp-online-active-users-notice">';
-		    echo '<p>' . wp_kses_post( $message ) . '</p>';
-		    echo '</div>';
-		}
-
 
 		/**
 		 * Delete the plugin's online-users transient on deactivation.
@@ -276,8 +265,8 @@ if ( ! class_exists( 'Webi_Active_User' ) ) {
 }
 
 $wpoau_plugin = new Webi_Active_User();
+new WPOAU_Dashboard_Updates();
 // Register the custom widget.
 add_action('widgets_init', function () {
 	register_widget( 'Webi_Custom_Widget' );
-}
-);
+});

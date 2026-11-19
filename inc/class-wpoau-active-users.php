@@ -147,7 +147,7 @@ class Wpoau_Active_Users {
 					esc_html__( 'Active Users (%d)', 'online-active-users' ),
 					absint( $this->main_class->wpoau_online_users( 'count' ) )
 				) . '</span>',
-				'href'  => esc_url( admin_url( 'users.php?page=wpoau-active-users' ) ),
+				'href'  => esc_url( admin_url( 'users.php?page=wpoau-active-users&filter_status=online' ) ),
 			)
 		);
 	}
@@ -158,7 +158,7 @@ class Wpoau_Active_Users {
 		if ( ! current_user_can( 'list_users' ) ) {
 			return;
 		}
-		wp_add_dashboard_widget( 'webizito_active_users', __( 'Active Users', 'online-active-users' ), array( $this, 'wpoau_active_user_dashboard' ) );
+		wp_add_dashboard_widget( 'webizito_active_users', __( 'WP Online Active Users Overview', 'online-active-users' ), array( $this, 'wpoau_active_user_dashboard' ) );
 	}
 	/**
 	 * Render the "Active Users" dashboard widget content.
@@ -168,11 +168,129 @@ class Wpoau_Active_Users {
 	 */
 	public function wpoau_active_user_dashboard( $post, $callback_args ) {
 		unset( $post, $callback_args );
-		$user_count   = count_users();
-		$users_plural = ( 1 === $user_count['total_users'] ) ? __( 'User', 'online-active-users' ) : __( 'Users', 'online-active-users' );
-		$active_users = $this->main_class->wpoau_online_users( 'count' );
-		echo '<div><a href="' . esc_url( admin_url( 'users.php?page=wpoau-active-users' ) ) . '">' . absint( $user_count['total_users'] ) . ' ' . esc_html( $users_plural ) . '</a> <small>(' . absint( $active_users ) . ' ' . esc_html__( 'currently active', 'online-active-users' ) . ')</small></div>';
+		if ( ! current_user_can( 'list_users' ) ) {
+			return;
+		}
+		require_once WPOAU_PLUGIN_DIR . '/inc/class-wpoau-user-directory.php';
+		$activity   = get_transient( 'users_status' );
+		$activity   = is_array( $activity ) ? $activity : array();
+		$cutoff     = time() - 30 * DAY_IN_SECONDS;
+		$online_ids = array();
+		foreach ( $activity as $user_id => $record ) {
+			if ( isset( $record['last'] ) && (int) $record['last'] > time() - 50 ) {
+				$online_ids[] = absint( $user_id );
+			}
+		}
+		$counts = array(
+			'online'   => $this->wpoau_count_users(
+				array(
+					'include' => $online_ids ? $online_ids : array( 0 ),
+				)
+			),
+			'offline'  => $this->wpoau_count_users(
+				array(
+					'exclude'   => $online_ids,
+					'meta_query' => array(
+						array(
+							'key'     => 'last_seen',
+							'value'   => $cutoff,
+							'compare' => '>',
+							'type'    => 'NUMERIC',
+						),
+					),
+				)
+			),
+			'inactive' => $this->wpoau_count_users(
+				array(
+					'exclude'   => $online_ids,
+					'meta_query' => array(
+						'relation' => 'AND',
+						array(
+							'key'     => 'last_seen',
+							'value'   => 0,
+							'compare' => '>',
+							'type'    => 'NUMERIC',
+						),
+						array(
+							'key'     => 'last_seen',
+							'value'   => $cutoff,
+							'compare' => '<=',
+							'type'    => 'NUMERIC',
+						),
+					),
+				)
+			),
+		);
+		$recent = new WP_User_Query(
+			array(
+				'number'         => 3,
+				'orderby'        => 'meta_value_num',
+				'order'          => 'DESC',
+				'meta_key'       => 'last_seen',
+				'meta_query'     => array(
+					array(
+						'key'     => 'last_seen',
+						'value'   => 0,
+						'compare' => '>',
+						'type'    => 'NUMERIC',
+					),
+				),
+				'fields'         => 'all',
+				'count_total'    => false,
+				'update_meta_cache' => true,
+			)
+		);
+		$labels = array(
+			'online'   => __( 'Online Now', 'online-active-users' ),
+			'offline'  => __( 'Offline', 'online-active-users' ),
+			'inactive' => __( 'Inactive (30+ days)', 'online-active-users' ),
+			'unrecorded' => __( 'No activity recorded', 'online-active-users' ),
+		);
+
+		$online_users_url = admin_url( 'users.php?page=wpoau-active-users&filter_status=online' );
+		$all_users_url = admin_url( 'users.php?page=wpoau-active-users' );
+
+		echo '<div class="wpoau-dashboard-overview">';
+		echo '<div class="wpoau-dashboard-stats" role="group" aria-label="' . esc_attr__( 'User activity summary', 'online-active-users' ) . '">';
+		foreach ( array(
+			'online'   => __( 'Online Now', 'online-active-users' ),
+			'offline'  => __( 'Offline', 'online-active-users' ),
+			'inactive' => __( 'Inactive', 'online-active-users' ),
+		) as $status => $label ) {
+			echo '<div class="wpoau-dashboard-stat wpoau-dashboard-stat--' . esc_attr( $status ) . '"><span class="wpoau-dashboard-stat-label"><span class="wpoau-dashboard-stat-dot" aria-hidden="true"></span>' . esc_html( $label ) . '</span><strong>' . absint( $counts[ $status ] ) . '</strong></div>';
+		}
+		echo '</div>';
+		echo '<div class="wpoau-dashboard-footer"><a class="button button-primary" href="' . esc_url( $online_users_url ) . '">' . esc_html__( 'View Online users', 'online-active-users' ) . '</a><a class="button" href="' . esc_url( $all_users_url ) . '">' . esc_html__( 'View all users', 'online-active-users' ) . '</a></div>';
 		do_action( 'wpoau_dashboard_session_summary' );
+		echo '<nav class="wpoau-dashboard-shortcuts" aria-label="' . esc_attr__( 'Online Active Users links', 'online-active-users' ) . '">';
+		echo '<a href="https://webizito.com/blog/" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Blog', 'online-active-users' ) . ' <span aria-hidden="true" class="dashicons dashicons-external"></span><span class="screen-reader-text">' . esc_html__( 'Opens in a new tab.', 'online-active-users' ) . '</span></a>';
+		echo '<a href="' . esc_url( WPOAU_Hub::docs_url() ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Help', 'online-active-users' ) . ' <span aria-hidden="true" class="dashicons dashicons-external"></span><span class="screen-reader-text">' . esc_html__( 'Opens in a new tab.', 'online-active-users' ) . '</span></a>';
+		echo '<a href="' . esc_url( WPOAU_Hub::contact_url() ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Contact', 'online-active-users' ) . ' <span aria-hidden="true" class="dashicons dashicons-external"></span><span class="screen-reader-text">' . esc_html__( 'Opens in a new tab.', 'online-active-users' ) . '</span></a>';
+		if ( current_user_can( 'manage_options' ) ) {
+			echo '<a href="' . esc_url( WPOAU_Hub::product_url() ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Go Pro', 'online-active-users' ) . ' <span aria-hidden="true" class="dashicons dashicons-external"></span><span class="screen-reader-text">' . esc_html__( 'Opens in a new tab.', 'online-active-users' ) . '</span></a>';
+		}
+		echo '</nav>';
+		echo '</div>';
+	}
+
+	/**
+	 * Count matching users without loading user records.
+	 *
+	 * @param array $query_args User query filters.
+	 * @return int
+	 */
+	private function wpoau_count_users( $query_args ) {
+		$query = new WP_User_Query(
+			array_merge(
+				$query_args,
+				array(
+					'number'      => 1,
+					'fields'      => 'ID',
+					'count_total' => true,
+				)
+			)
+		);
+		return (int) $query->get_total();
 	}
 	/**
 	 * Track a transient key in options so it can be cleaned up on uninstall.
