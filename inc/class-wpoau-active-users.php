@@ -189,7 +189,7 @@ class Wpoau_Active_Users {
 			),
 			'offline'  => $this->wpoau_count_users(
 				array(
-					'exclude'   => $online_ids,
+					'exclude'    => $online_ids,
 					'meta_query' => array(
 						array(
 							'key'     => 'last_seen',
@@ -202,7 +202,7 @@ class Wpoau_Active_Users {
 			),
 			'inactive' => $this->wpoau_count_users(
 				array(
-					'exclude'   => $online_ids,
+					'exclude'    => $online_ids,
 					'meta_query' => array(
 						'relation' => 'AND',
 						array(
@@ -223,11 +223,11 @@ class Wpoau_Active_Users {
 		);
 		$recent = new WP_User_Query(
 			array(
-				'number'         => 3,
-				'orderby'        => 'meta_value_num',
-				'order'          => 'DESC',
-				'meta_key'       => 'last_seen',
-				'meta_query'     => array(
+				'number'            => 3,
+				'orderby'           => 'meta_value_num',
+				'order'             => 'DESC',
+				'meta_key'          => 'last_seen',
+				'meta_query'        => array(
 					array(
 						'key'     => 'last_seen',
 						'value'   => 0,
@@ -235,20 +235,20 @@ class Wpoau_Active_Users {
 						'type'    => 'NUMERIC',
 					),
 				),
-				'fields'         => 'all',
-				'count_total'    => false,
+				'fields'            => 'all',
+				'count_total'       => false,
 				'update_meta_cache' => true,
 			)
 		);
 		$labels = array(
-			'online'   => __( 'Online Now', 'online-active-users' ),
-			'offline'  => __( 'Offline', 'online-active-users' ),
-			'inactive' => __( 'Inactive (30+ days)', 'online-active-users' ),
+			'online'     => __( 'Online Now', 'online-active-users' ),
+			'offline'    => __( 'Offline', 'online-active-users' ),
+			'inactive'   => __( 'Inactive (30+ days)', 'online-active-users' ),
 			'unrecorded' => __( 'No activity recorded', 'online-active-users' ),
 		);
 
 		$online_users_url = admin_url( 'users.php?page=wpoau-active-users&filter_status=online' );
-		$all_users_url = admin_url( 'users.php?page=wpoau-active-users' );
+		$all_users_url    = admin_url( 'users.php?page=wpoau-active-users' );
 
 		echo '<div class="wpoau-dashboard-overview">';
 		echo '<div class="wpoau-dashboard-stats" role="group" aria-label="' . esc_attr__( 'User activity summary', 'online-active-users' ) . '">';

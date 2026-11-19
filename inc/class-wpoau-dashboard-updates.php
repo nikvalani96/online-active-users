@@ -36,8 +36,8 @@ final class WPOAU_Dashboard_Updates {
 		$items      = self::items();
 		$categories = array(
 			'product-update' => __( 'Product Update', 'online-active-users' ),
-			'guide'           => __( 'Guide', 'online-active-users' ),
-			'tutorial'        => __( 'Tutorial', 'online-active-users' ),
+			'guide'          => __( 'Guide', 'online-active-users' ),
+			'tutorial'       => __( 'Tutorial', 'online-active-users' ),
 		);
 		echo '<section class="wpoau-dashboard-feed" aria-labelledby="wpoau-dashboard-feed-title">
 		<h3 id="wpoau-dashboard-feed-title"><b>' . esc_html__( "What's New in WPOAU", 'online-active-users' ) . '</b></h3>';
@@ -61,14 +61,14 @@ final class WPOAU_Dashboard_Updates {
 
 	/** Fetch and validate the content feed in the background. */
 	public function refresh(): void {
-		if ( ! add_option( self::LOCK_OPTION, time(), '', false ) ) {
+		if ( ! self::claim_lock() ) {
 			$locked_at = (int) get_option( self::LOCK_OPTION, 0 );
 			if ( $locked_at > time() - 300 ) {
 				$this->schedule_refresh( 5 * MINUTE_IN_SECONDS );
 				return;
 			}
 			delete_option( self::LOCK_OPTION );
-			if ( ! add_option( self::LOCK_OPTION, time(), '', false ) ) {
+			if ( ! self::claim_lock( true ) ) {
 				$this->schedule_refresh( 5 * MINUTE_IN_SECONDS );
 				return;
 			}
@@ -96,7 +96,7 @@ final class WPOAU_Dashboard_Updates {
 					$payload      = strlen( $body ) <= 65536 && false !== stripos( $content_type, 'application/json' )
 						? json_decode( $body, true )
 						: null;
-					$items = self::validate_items( is_array( $payload ) ? ( $payload['items'] ?? null ) : null );
+					$items        = self::validate_items( is_array( $payload ) ? ( $payload['items'] ?? null ) : null );
 					if ( is_array( $items ) ) {
 						$cache = array(
 							'fetched' => time(),
@@ -106,6 +106,7 @@ final class WPOAU_Dashboard_Updates {
 							delete_transient( 'wpoau_updates_backoff' );
 							$success = true;
 						} elseif ( ! get_transient( 'wpoau_updates_cache_error_logged' ) ) {
+							// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Throttled operational diagnostic.
 							error_log( 'WPOAU: unable to save the product updates cache.' );
 							set_transient( 'wpoau_updates_cache_error_logged', 1, HOUR_IN_SECONDS );
 						}
@@ -213,7 +214,7 @@ final class WPOAU_Dashboard_Updates {
 			$category = sanitize_key( $item['category'] );
 			$url      = esc_url_raw( $item['url'], array( 'https' ) );
 			$parts    = wp_parse_url( $url );
-			$date = false;
+			$date     = false;
 			if ( preg_match( '/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})$/D', $item['date'] ) ) {
 				$date_object = \DateTimeImmutable::createFromFormat( 'Y-m-d\TH:i:sP', $item['date'] );
 				$date_errors = \DateTimeImmutable::getLastErrors();
@@ -221,7 +222,7 @@ final class WPOAU_Dashboard_Updates {
 					$date = $date_object->getTimestamp();
 				}
 			}
-			$title    = sanitize_text_field( $item['title'] );
+			$title = sanitize_text_field( $item['title'] );
 			if ( ! in_array( $category, array( 'product-update', 'guide', 'tutorial', 'article' ), true ) || '' === $title || ! self::valid_content_url( $url ) || ! is_array( $parts ) || empty( $parts['path'] ) || false === $date ) {
 				return false;
 			}
@@ -236,14 +237,33 @@ final class WPOAU_Dashboard_Updates {
 		return $items;
 	}
 
-	/** Schedule a refresh or log a throttled, non-sensitive diagnostic. */
+	/**
+	 * Acquire the refresh lock.
+	 *
+	 * @param bool $replace Whether to replace an expired lock.
+	 * @return bool
+	 */
+	private static function claim_lock( bool $replace = false ): bool {
+		if ( $replace ) {
+			return update_option( self::LOCK_OPTION, time(), false );
+		}
+		return add_option( self::LOCK_OPTION, time(), '', false );
+	}
+
+	/**
+	 * Schedule a refresh or log a throttled, non-sensitive diagnostic.
+	 *
+	 * @param int $delay Delay in seconds.
+	 * @return bool
+	 */
 	private function schedule_refresh( int $delay ): bool {
 		if ( wp_next_scheduled( self::REFRESH_HOOK ) ) {
 			return true;
 		}
 		$result = wp_schedule_single_event( time() + $delay, self::REFRESH_HOOK, array(), true );
-		if ( is_wp_error( $result ) || false === $result ) {
+		if ( is_wp_error( $result ) ) {
 			if ( ! get_transient( 'wpoau_updates_schedule_error_logged' ) ) {
+				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Throttled operational diagnostic.
 				error_log( 'WPOAU: unable to schedule the product updates refresh.' );
 				set_transient( 'wpoau_updates_schedule_error_logged', 1, HOUR_IN_SECONDS );
 			}
